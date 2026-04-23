@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerador de Orçamento — Imper Soluções</title>
+<style>
+:root {
+  --azul: #1e3a5f;
+  --azul2: #1e40af;
+  --laranja: #f97316;
+  --bg: #f1f5f9;
+  --card: #ffffff;
+  --text: #1e293b;
+  --text2: #64748b;
+  --border: #e2e8f0;
+  --green: #16a34a;
+  --red: #dc2626;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); }
+
+header {
+  background: var(--azul); color: #fff;
+  padding: 16px 24px; display: flex; align-items: center; gap: 14px;
+  position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,.2);
+}
+.logo-text span:first-child { font-size: 19px; font-weight: 900; color: var(--laranja); letter-spacing: 1px; display: block; }
+.logo-text span:last-child { font-size: 10px; font-weight: 400; color: #94a3b8; display: block; }
+header h1 { font-size: 15px; font-weight: 700; border-left: 2px solid #334d6e; padding-left: 14px; color: #cbd5e1; margin-left: 4px; }
+
+main { max-width: 960px; margin: 0 auto; padding: 24px 16px 80px; }
+
+/* STEPS */
+.steps-bar {
+  display: flex; gap: 0; margin-bottom: 28px;
+  background: var(--card); border-radius: 12px;
+  border: 1px solid var(--border); overflow: hidden;
+}
+.step-item {
+  flex: 1; padding: 14px 10px; text-align: center; font-size: 12px; font-weight: 600;
+  color: var(--text2); border-right: 1px solid var(--border); cursor: pointer;
+  transition: all .2s; position: relative;
+}
+.step-item:last-child { border-right: none; }
+.step-item .step-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: 50%; background: var(--border);
+  color: var(--text2); font-size: 11px; font-weight: 700; margin-bottom: 4px;
+  display: block; margin: 0 auto 5px;
+}
+.step-item.active { background: var(--azul); color: #fff; }
+.step-item.active .step-num { background: var(--laranja); color: #fff; }
+.step-item.done { color: var(--green); }
+.step-item.done .step-num { background: #dcfce7; color: var(--green); }
+
+/* CARDS */
+.card {
+  background: var(--card); border-radius: 14px; padding: 24px;
+  border: 1px solid var(--border); margin-bottom: 20px;
+}
+.card-title { font-size: 14px; font-weight: 800; color: var(--azul); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.card-title .icon { width: 32px; height: 32px; background: #eff6ff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+
+/* PANELS */
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* TEXTAREA */
+textarea {
+  width: 100%; border: 1.5px solid var(--border); border-radius: 10px;
+  padding: 14px; font-size: 13px; font-family: inherit; color: var(--text);
+  resize: vertical; outline: none; transition: border-color .15s;
+  background: #f8fafc;
+}
+textarea:focus { border-color: var(--azul2); background: #fff; }
+
+/* INPUTS */
+input[type=text], input[type=number], select {
+  border: 1.5px solid var(--border); border-radius: 8px;
+  padding: 9px 12px; font-size: 13px; font-family: inherit;
+  outline: none; transition: border-color .15s; background: #f8fafc; color: var(--text);
+  width: 100%;
+}
+input:focus, select:focus { border-color: var(--azul2); background: #fff; }
+
+label { font-size: 12px; font-weight: 600; color: var(--text2); display: block; margin-bottom: 5px; }
+
+/* BUTTONS */
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 700;
+  border: none; cursor: pointer; transition: all .15s;
+}
+.btn-primary { background: var(--azul); color: #fff; }
+.btn-primary:hover { background: var(--azul2); }
+.btn-orange { background: var(--laranja); color: #fff; }
+.btn-orange:hover { background: #ea6c05; }
+.btn-outline { background: transparent; color: var(--azul); border: 1.5px solid var(--azul); }
+.btn-outline:hover { background: var(--azul); color: #fff; }
+.btn-danger { background: #fef2f2; color: var(--red); border: 1px solid #fecaca; }
+.btn-danger:hover { background: var(--red); color: #fff; }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+.btn-green { background: var(--green); color: #fff; }
+.btn-green:hover { background: #15803d; }
+
+/* BADGE CHIPS */
+.chip-wrap { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+.chip {
+  display: flex; align-items: center; gap: 5px;
+  background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe;
+  border-radius: 20px; padding: 5px 12px; font-size: 12px; font-weight: 600;
+  cursor: pointer; transition: all .15s;
+}
+.chip:hover { background: #1e40af; color: #fff; }
+.chip.sel { background: var(--azul); color: #fff; border-color: var(--azul); }
+.chip.sel:hover { background: var(--red); border-color: var(--red); }
+
+/* ITEMS TABLE */
+.items-table { width: 100%; border-collapse: collapse; }
+.items-table th {
+  background: #f8fafc; font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .5px; color: var(--text2); padding: 10px 12px; border-bottom: 1.5px solid var(--border);
+  text-align: left;
+}
+.items-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: middle; }
+.items-table tr:last-child td { border-bottom: none; }
+.items-table tr:hover td { background: #f8fafc; }
+.items-table input { width: 100%; }
+.col-desc { min-width: 200px; }
+.col-un { width: 80px; }
+.col-qtd { width: 90px; }
+.col-unit { width: 120px; }
+.col-total { width: 120px; font-weight: 700; color: var(--azul); }
+.col-del { width: 50px; text-align: center; }
+
+/* TOTAIS */
+.totais-box { background: #f8fafc; border-radius: 10px; padding: 16px 20px; border: 1px solid var(--border); }
+.totais-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; font-size: 13px; border-bottom: 1px solid var(--border); }
+.totais-row:last-child { border-bottom: none; }
+.totais-row.grand { font-size: 18px; font-weight: 900; color: var(--azul); padding-top: 12px; }
+
+/* PREVIEW ORCAMENTO */
+#preview-area { display: none; }
+.orc-header { text-align: center; border-bottom: 3px solid var(--azul); padding-bottom: 18px; margin-bottom: 20px; }
+.orc-logo-title { font-size: 26px; font-weight: 900; color: var(--laranja); letter-spacing: 2px; }
+.orc-sub { font-size: 12px; color: var(--text2); margin-top: 2px; }
+.orc-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+.orc-meta-block { background: #f8fafc; border-radius: 8px; padding: 12px 16px; }
+.orc-meta-block h4 { font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--text2); margin-bottom: 6px; }
+.orc-meta-block p { font-size: 13px; font-weight: 600; }
+.orc-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 12.5px; }
+.orc-table th { background: var(--azul); color: #fff; padding: 8px 10px; text-align: left; }
+.orc-table td { padding: 8px 10px; border-bottom: 1px solid #e2e8f0; }
+.orc-table tr:nth-child(even) td { background: #f8fafc; }
+.orc-totais { text-align: right; margin-top: 12px; }
+.orc-totais table { margin-left: auto; border-collapse: collapse; min-width: 280px; }
+.orc-totais td { padding: 5px 10px; font-size: 13px; }
+.orc-totais .grand-td { font-size: 17px; font-weight: 900; color: var(--azul); border-top: 2px solid var(--azul); }
+.orc-footer { margin-top: 28px; font-size: 11px; color: var(--text2); border-top: 1px solid var(--border); padding-top: 14px; }
+.orc-assinatura { margin-top: 40px; display: flex; gap: 40px; }
+.assin-line { flex: 1; text-align: center; }
+.assin-line hr { border: none; border-top: 1px solid #94a3b8; margin-bottom: 5px; }
+.assin-line p { font-size: 11px; color: var(--text2); }
+.validade-badge { display: inline-block; background: #fef9c3; color: #854d0e; border: 1px solid #fef08a; border-radius: 6px; padding: 4px 12px; font-size: 11px; font-weight: 700; margin-top: 10px; }
+
+/* GRID UTILS */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.flex-end { display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; }
+.flex-between { display: flex; justify-content: space-between; align-items: center; }
+
+/* ALERT */
+.alert { border-radius: 8px; padding: 12px 16px; font-size: 13px; margin: 12px 0; }
+.alert-blue { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+.alert-green { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+.alert-orange { background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; }
+
+/* PRINT */
+@media print {
+  body { background: #fff; }
+  header, .steps-bar, #painel-analise, #painel-itens, #painel-dados, .no-print { display: none !important; }
+  #preview-area { display: block !important; }
+  .card { border: none; box-shadow: none; padding: 0; }
+  main { padding: 0; max-width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-text">
+    <span>IMPER</span>
+    <span>SOLUÇÕES</span>
+  </div>
+  <h1>Gerador de Orçamento</h1>
+</header>
+
+<main>
+
+<!-- STEPS -->
+<div class="steps-bar">
+  <div class="step-item active" id="s1">
+    <div class="step-num">1</div>
+    Documento / Descrição
+  </div>
+  <div class="step-item" id="s2">
+    <div class="step-num">2</div>
+    Serviços Detectados
+  </div>
+  <div class="step-item" id="s3">
+    <div class="step-num">3</div>
+    Itens & Preços
+  </div>
+  <div class="step-item" id="s4">
+    <div class="step-num">4</div>
+    Orçamento Final
+  </div>
+</div>
+
+<!-- PAINEL 1: ENTRADA -->
+<div class="panel active" id="painel-entrada">
+  <div class="card">
+    <div class="card-title"><div class="icon">📄</div> Cole o Edital, Documento ou Descreva o Serviço</div>
+    <label>Texto do Edital / Documento / Descrição do Serviço</label>
+    <textarea id="txt-entrada" rows="12" placeholder="Cole aqui o texto do edital, memorial descritivo, especificação técnica, laudo, ou descreva livremente o que precisa ser feito.
+
+Exemplos:
+• Impermeabilização da laje de cobertura com manta asfáltica, área aprox. 180m²
+• Pintura externa de fachada, 3 pavimentos
+• Reforma banheiros e áreas molhadas — substituição de impermeabilização
+• Edital de licitação: item 4.2 — impermeabilização de calhas e terraços..."></textarea>
+
+    <div class="alert alert-blue" style="margin-top:14px;">
+      💡 <strong>Dica:</strong> Quanto mais detalhado o texto, mais itens serão detectados automaticamente. Você poderá ajustar tudo no próximo passo.
+    </div>
+
+    <div class="flex-end">
+      <button class="btn btn-orange" onclick="analisarTexto()">🔍 Analisar e Detectar Serviços →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAINEL 2: ANÁLISE -->
+<div class="panel" id="painel-analise">
+  <div class="card">
+    <div class="card-title"><div class="icon">✅</div> Serviços Detectados no Documento</div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:14px;">Clique nos serviços para selecionar/remover. Você pode adicionar itens manualmente no próximo passo.</p>
+    <div id="chips-detectados" class="chip-wrap"></div>
+    <div id="nenhum-detectado" class="alert alert-orange" style="display:none;">
+      ⚠️ Nenhum serviço específico detectado automaticamente. Selecione manualmente abaixo ou adicione itens no próximo passo.
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:18px 0;">
+    <div class="card-title" style="margin-bottom:10px;"><div class="icon">➕</div> Adicionar Serviços Manualmente</div>
+    <div class="chip-wrap" id="catalogo-chips"></div>
+
+    <div class="flex-end">
+      <button class="btn btn-outline" onclick="irPara(1)">← Voltar</button>
+      <button class="btn btn-orange" onclick="montarItens()">Montar Itens & Preços →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAINEL 3: ITENS -->
+<div class="panel" id="painel-itens">
+  <div class="card">
+    <div class="card-title"><div class="icon">💰</div> Itens do Orçamento</div>
+
+    <div style="overflow-x:auto;">
+      <table class="items-table">
+        <thead>
+          <tr>
+            <th class="col-desc">Descrição do Serviço</th>
+            <th class="col-un">Unid.</th>
+            <th class="col-qtd">Qtd.</th>
+            <th class="col-unit">Preço Unit. (R$)</th>
+            <th class="col-total">Total</th>
+            <th class="col-del"></th>
+          </tr>
+        </thead>
+        <tbody id="tbody-itens"></tbody>
+      </table>
+    </div>
+
+    <button class="btn btn-outline btn-sm" style="margin-top:12px;" onclick="adicionarLinhaVazia()">+ Adicionar Item</button>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:18px 0;">
+
+    <!-- Extras -->
+    <div class="grid3" style="margin-bottom:16px;">
+      <div>
+        <label>Desconto (%)</label>
+        <input type="number" id="inp-desconto" min="0" max="100" value="0" step="0.5" oninput="calcTotais()">
+      </div>
+      <div>
+        <label>BDI / Encargos (%)</label>
+        <input type="number" id="inp-bdi" min="0" max="100" value="0" step="0.5" oninput="calcTotais()">
+      </div>
+      <div>
+        <label>Prazo de Execução</label>
+        <input type="text" id="inp-prazo" placeholder="Ex: 10 dias úteis">
+      </div>
+    </div>
+
+    <!-- Totais -->
+    <div class="totais-box">
+      <div class="totais-row"><span>Subtotal</span><span id="tot-sub">R$ 0,00</span></div>
+      <div class="totais-row"><span id="lbl-desc">Desconto (0%)</span><span id="tot-desc" style="color:var(--green);">- R$ 0,00</span></div>
+      <div class="totais-row"><span id="lbl-bdi">BDI/Encargos (0%)</span><span id="tot-bdi">+ R$ 0,00</span></div>
+      <div class="totais-row grand"><span>TOTAL GERAL</span><span id="tot-geral">R$ 0,00</span></div>
+    </div>
+
+    <div class="flex-end">
+      <button class="btn btn-outline" onclick="irPara(2)">← Voltar</button>
+      <button class="btn btn-orange" onclick="irParaDados()">Dados do Cliente →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAINEL 4: DADOS -->
+<div class="panel" id="painel-dados">
+  <div class="card">
+    <div class="card-title"><div class="icon">👤</div> Dados do Cliente e Orçamento</div>
+    <div class="grid2" style="margin-bottom:14px;">
+      <div>
+        <label>Nome / Razão Social do Cliente</label>
+        <input type="text" id="inp-cliente" placeholder="Ex: João da Silva / Construtora ABC">
+      </div>
+      <div>
+        <label>CPF / CNPJ do Cliente</label>
+        <input type="text" id="inp-cpf-cliente" placeholder="000.000.000-00">
+      </div>
+    </div>
+    <div class="grid2" style="margin-bottom:14px;">
+      <div>
+        <label>Endereço / Local do Serviço</label>
+        <input type="text" id="inp-endereco" placeholder="Rua, número, bairro, cidade">
+      </div>
+      <div>
+        <label>Referência (Nº Edital / OS / Projeto)</label>
+        <input type="text" id="inp-ref" placeholder="Ex: Edital 001/2026 — Lote 3">
+      </div>
+    </div>
+    <div class="grid3" style="margin-bottom:14px;">
+      <div>
+        <label>Data do Orçamento</label>
+        <input type="text" id="inp-data" placeholder="dd/mm/aaaa">
+      </div>
+      <div>
+        <label>Validade do Orçamento</label>
+        <input type="text" id="inp-validade" placeholder="Ex: 30 dias">
+      </div>
+      <div>
+        <label>Forma de Pagamento</label>
+        <input type="text" id="inp-pgto" placeholder="Ex: 50% entrada, 50% entrega">
+      </div>
+    </div>
+    <div style="margin-bottom:14px;">
+      <label>Observações / Condições Gerais</label>
+      <textarea id="inp-obs" rows="4" placeholder="Informações adicionais, exclusões de escopo, garantia, etc.
+
+Ex: Garantia de 5 anos para impermeabilização. Não inclui serviços de alvenaria e reboco. Material incluso no preço."></textarea>
+    </div>
+
+    <div class="flex-end">
+      <button class="btn btn-outline" onclick="irPara(3)">← Voltar</button>
+      <button class="btn btn-green" onclick="gerarOrcamento()">📄 Gerar Orçamento</button>
+    </div>
+  </div>
+</div>
+
+<!-- PREVIEW / IMPRESSÃO -->
+<div id="preview-area">
+  <div class="card">
+    <!-- CABEÇALHO -->
+    <div class="orc-header">
+      <div class="orc-logo-title">IMPER SOLUÇÕES</div>
+      <div class="orc-sub">Impermeabilização · Pintura · Reforma · Trabalho em Altura</div>
+      <div class="orc-sub" style="margin-top:4px;">CNPJ 31.527.551/0001-31 | (11) 99999-9999</div>
+      <div style="margin-top:12px;font-size:20px;font-weight:900;color:var(--azul);">ORÇAMENTO</div>
+      <div id="orc-num" style="font-size:12px;color:var(--text2);margin-top:2px;"></div>
+    </div>
+
+    <!-- META -->
+    <div class="orc-meta">
+      <div class="orc-meta-block">
+        <h4>Cliente</h4>
+        <p id="orc-cliente">—</p>
+        <p id="orc-cpf" style="font-size:12px;color:var(--text2);margin-top:2px;"></p>
+        <p id="orc-endereco" style="font-size:12px;color:var(--text2);margin-top:2px;"></p>
+      </div>
+      <div class="orc-meta-block">
+        <h4>Dados do Orçamento</h4>
+        <p style="font-size:12px;">Data: <strong id="orc-data">—</strong></p>
+        <p style="font-size:12px;margin-top:4px;">Referência: <strong id="orc-ref">—</strong></p>
+        <p style="font-size:12px;margin-top:4px;">Prazo de Execução: <strong id="orc-prazo">—</strong></p>
+        <p style="font-size:12px;margin-top:4px;">Pagamento: <strong id="orc-pgto">—</strong></p>
+        <div class="validade-badge">Válido por: <span id="orc-validade">30 dias</span></div>
+      </div>
+    </div>
+
+    <!-- TABELA -->
+    <table class="orc-table">
+      <thead>
+        <tr>
+          <th style="width:40px;">#</th>
+          <th>Descrição do Serviço</th>
+          <th style="width:60px;">Unid.</th>
+          <th style="width:70px;">Qtd.</th>
+          <th style="width:110px;">Preço Unit.</th>
+          <th style="width:110px;">Total</th>
+        </tr>
+      </thead>
+      <tbody id="orc-tbody"></tbody>
+    </table>
+
+    <!-- TOTAIS -->
+    <div class="orc-totais">
+      <table>
+        <tr><td>Subtotal</td><td style="text-align:right;font-weight:700;" id="orc-sub">R$ 0,00</td></tr>
+        <tr id="orc-row-desc"><td id="orc-lbl-desc">Desconto</td><td style="text-align:right;color:var(--green);font-weight:700;" id="orc-desc-val">- R$ 0,00</td></tr>
+        <tr id="orc-row-bdi"><td id="orc-lbl-bdi">BDI/Encargos</td><td style="text-align:right;font-weight:700;" id="orc-bdi-val">+ R$ 0,00</td></tr>
+        <tr><td colspan="2"><hr style="border:2px solid var(--azul);margin:6px 0;"></td></tr>
+        <tr><td class="grand-td"><strong>TOTAL GERAL</strong></td><td class="grand-td" style="text-align:right;" id="orc-total-geral">R$ 0,00</td></tr>
+      </table>
+    </div>
+
+    <!-- OBS -->
+    <div id="orc-obs-block" style="margin-top:20px;background:#f8fafc;border-radius:8px;padding:14px 16px;border:1px solid var(--border);display:none;">
+      <strong style="font-size:12px;color:var(--text2);">OBSERVAÇÕES / CONDIÇÕES GERAIS</strong>
+      <p id="orc-obs" style="font-size:12.5px;margin-top:6px;line-height:1.6;white-space:pre-wrap;"></p>
+    </div>
+
+    <!-- ASSINATURA -->
+    <div class="orc-assinatura">
+      <div class="assin-line">
+        <hr>
+        <p>Imper Soluções — Diogo</p>
+        <p>CNPJ 31.527.551/0001-31</p>
+      </div>
+      <div class="assin-line">
+        <hr>
+        <p>Cliente / Contratante</p>
+        <p id="orc-assin-cliente">—</p>
+      </div>
+    </div>
+
+    <div class="orc-footer">
+      Este orçamento foi gerado pela plataforma Imper Soluções. Os preços são válidos pela vigência indicada acima.
+      Para dúvidas, entre em contato pelo (11) 99999-9999.
+    </div>
+
+    <!-- BOTÕES NO PREVIEW -->
+    <div class="flex-between no-print" style="margin-top:24px;">
+      <button class="btn btn-outline" onclick="irPara(4)">← Editar Dados</button>
+      <div style="display:flex;gap:10px;">
+        <button class="btn btn-primary" onclick="window.print()">🖨️ Imprimir / Salvar PDF</button>
+        <button class="btn btn-orange" onclick="novoOrcamento()">+ Novo Orçamento</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ─── CATÁLOGO DE SERVIÇOS ─────────────────────────────────────────────────────
+const CATALOGO = [
+  { id:'imp_manta', label:'Impermeabilização com Manta Asfáltica', un:'m²', preco:85, keywords:['manta asfáltica','manta asfaltica','manta','impermeabilização','impermeabilizacao','impermeabilizar','laje','terraço','terraco','cobertura','lajota','caixa d\'água','caixa dagua','reservatório','reservatorio','piscina','piscinão','calha','sarjeta'] },
+  { id:'imp_cristal', label:'Impermeabilização por Cristalização', un:'m²', preco:70, keywords:['cristalização','cristalizacao','cristalizante','subsolo','porao','porão','fundação','fundacao','paredes enterradas','bloco','alvenaria úmida'] },
+  { id:'imp_argamassa', label:'Impermeabilização com Argamassa Polimérica', un:'m²', preco:60, keywords:['argamassa polimerica','argamassa polimérica','banheiro','área molhada','area molhada','cozinha','lavanderia','box','piso molhado'] },
+  { id:'imp_flex', label:'Impermeabilização com Manta Flex / Líquida', un:'m²', preco:75, keywords:['manta flex','manta liquida','manta líquida','polyurea','poliurea','elastomérico','elastomerico','manta liquida'] },
+  { id:'imp_pu', label:'Impermeabilização com PU (Poliuretano)', un:'m²', preco:110, keywords:['poliuretano','pu impermeabilização','pu impermeabilizacao','manta de pu'] },
+  { id:'pintura_ext', label:'Pintura Externa (Fachada / Muros)', un:'m²', preco:28, keywords:['pintura','pintar','tinta','fachada','muro','parede externa','externa','repintura','caiação','caiao','limpeza fachada'] },
+  { id:'pintura_int', label:'Pintura Interna', un:'m²', preco:18, keywords:['pintura interna','parede interna','teto','forro','pintura de teto','latex','látex','PVA'] },
+  { id:'pintura_epo', label:'Pintura Epóxi (Piso / Área Industrial)', un:'m²', preco:55, keywords:['epóxi','epoxi','piso industrial','piso epóxi','piso epoxi','pintura de piso'] },
+  { id:'reforma', label:'Serviços de Reforma Geral', un:'m²', preco:180, keywords:['reforma','adequação','adequacao','recuperação','recuperacao','reabilitação','reabilitacao','manutenção','manutencao','revitalização'] },
+  { id:'estrutura', label:'Recuperação Estrutural / Concreto', un:'m²', preco:220, keywords:['recuperação estrutural','recuperacao estrutural','estrutural','concreto','armadura','ferragem','corrosão','corrosao','carbonatação','reparo estrutural','fissura','trinca'] },
+  { id:'altura', label:'Serviços em Altura / Acesso por Corda', un:'h', preco:150, keywords:['altura','fachada','andaime','rapel','acesso por corda','ancorado','trabalho em altura','elevado'] },
+  { id:'termoacust', label:'Conforto Termoacústico (Isolamento)', un:'m²', preco:95, keywords:['térmica','termico','térmico','acústico','acustico','isolamento','conforto termico','lã de rocha','la de rocha','EPS','poliestireno','manta térmica'] },
+  { id:'drenagem', label:'Sistema de Drenagem / Calhas', un:'m', preco:120, keywords:['drenagem','dreno','calha','rufos','platibanda','saída de água','saida de agua','coletor'] },
+  { id:'consul', label:'Consultoria / Laudo Técnico / Vistoria', un:'serv', preco:500, keywords:['consultoria','laudo','vistoria','diagnóstico','diagnostico','acompanhamento técnico','acompanhamento tecnico','ART','RRT'] },
+  { id:'limpeza', label:'Limpeza e Preparação de Superfície', un:'m²', preco:15, keywords:['limpeza','preparação','preparacao','jateamento','hidrojato','escovamento','remoção de tinta','remocao de tinta'] },
+];
+
+// ─── ESTADO ───────────────────────────────────────────────────────────────────
+let servicosSelecionados = new Set();
+let itens = [];
+
+// ─── UTILITÁRIOS ─────────────────────────────────────────────────────────────
+const fmt = v => 'R$ ' + Number(v).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
+const parseR = s => parseFloat(String(s).replace(/[^\d,\.]/g,'').replace(',','.')) || 0;
+
+function irPara(step) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.step-item').forEach(s => s.classList.remove('active'));
+  const panels = ['painel-entrada','painel-analise','painel-itens','painel-dados'];
+  if (step >= 1 && step <= 4) {
+    document.getElementById(panels[step-1]).classList.add('active');
+    document.getElementById('s'+step).classList.add('active');
+  }
+  for (let i=1; i<step; i++) document.getElementById('s'+i).classList.add('done');
+  document.getElementById('preview-area').style.display = 'none';
+  window.scrollTo(0,0);
+}
+
+// ─── PASSO 1 → 2: ANALISAR TEXTO ─────────────────────────────────────────────
+function analisarTexto() {
+  const txt = document.getElementById('txt-entrada').value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  servicosSelecionados.clear();
+
+  CATALOGO.forEach(srv => {
+    const hit = srv.keywords.some(kw => {
+      const kwNorm = kw.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+      return txt.includes(kwNorm);
+    });
+    if (hit) servicosSelecionados.add(srv.id);
+  });
+
+  renderChipsDetectados();
+  renderCatalogo();
+  irPara(2);
+}
+
+function renderChipsDetectados() {
+  const cont = document.getElementById('chips-detectados');
+  const semNada = document.getElementById('nenhum-detectado');
+  const detectados = CATALOGO.filter(s => servicosSelecionados.has(s.id));
+
+  cont.innerHTML = '';
+  semNada.style.display = detectados.length === 0 ? 'flex' : 'none';
+
+  detectados.forEach(srv => {
+    const chip = document.createElement('div');
+    chip.className = 'chip sel';
+    chip.innerHTML = `✓ ${srv.label}`;
+    chip.onclick = () => { servicosSelecionados.delete(srv.id); renderChipsDetectados(); renderCatalogo(); };
+    cont.appendChild(chip);
+  });
+}
+
+function renderCatalogo() {
+  const cont = document.getElementById('catalogo-chips');
+  cont.innerHTML = '';
+  CATALOGO.filter(s => !servicosSelecionados.has(s.id)).forEach(srv => {
+    const chip = document.createElement('div');
+    chip.className = 'chip';
+    chip.textContent = '+ ' + srv.label;
+    chip.onclick = () => { servicosSelecionados.add(srv.id); renderChipsDetectados(); renderCatalogo(); };
+    cont.appendChild(chip);
+  });
+}
+
+// ─── PASSO 2 → 3: MONTAR ITENS ───────────────────────────────────────────────
+function montarItens() {
+  // Tenta extrair quantidades do texto
+  const txt = document.getElementById('txt-entrada').value;
+  const qtdRegex = /(\d[\d.,]*)\s*(m[²2]|m²|m2|ml|m|ha|kg|un|unid|unidade|h|horas?|serv|serviço)/gi;
+  const matches = [];
+  let m;
+  while ((m = qtdRegex.exec(txt)) !== null) {
+    matches.push({ val: parseFloat(m[1].replace(',','.')), un: m[2] });
+  }
+
+  itens = [];
+  CATALOGO.filter(s => servicosSelecionados.has(s.id)).forEach((srv, idx) => {
+    // Tenta associar uma quantidade detectada por unidade
+    const unNorm = srv.un.toLowerCase().replace('²','2');
+    const match = matches.find(mx => mx.un.toLowerCase().includes(unNorm.replace('²','2')));
+    itens.push({
+      desc: srv.label,
+      un: srv.un,
+      qtd: match ? match.val : 1,
+      unit: srv.preco
+    });
+  });
+
+  if (itens.length === 0) itens.push({desc:'', un:'m²', qtd:1, unit:0});
+
+  renderItens();
+  irPara(3);
+}
+
+function renderItens() {
+  const tbody = document.getElementById('tbody-itens');
+  tbody.innerHTML = '';
+  itens.forEach((item, idx) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="col-desc"><input type="text" value="${item.desc}" oninput="itens[${idx}].desc=this.value"></td>
+      <td class="col-un">
+        <select onchange="itens[${idx}].un=this.value">
+          ${['m²','m','m³','km','un','h','serv','kg','cx','vb'].map(u=>`<option ${u===item.un?'selected':''}>${u}</option>`).join('')}
+        </select>
+      </td>
+      <td class="col-qtd"><input type="number" min="0" step="0.01" value="${item.qtd}" oninput="itens[${idx}].qtd=parseFloat(this.value)||0;calcTotais();atualizarTotal(${idx})"></td>
+      <td class="col-unit"><input type="number" min="0" step="0.01" value="${item.unit}" oninput="itens[${idx}].unit=parseFloat(this.value)||0;calcTotais();atualizarTotal(${idx})"></td>
+      <td class="col-total" id="item-total-${idx}">${fmt(item.qtd*item.unit)}</td>
+      <td class="col-del"><button class="btn btn-danger btn-sm" onclick="removerItem(${idx})">✕</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+  calcTotais();
+}
+
+function atualizarTotal(idx) {
+  const el = document.getElementById('item-total-'+idx);
+  if (el) el.textContent = fmt(itens[idx].qtd * itens[idx].unit);
+}
+
+function removerItem(idx) {
+  itens.splice(idx,1);
+  renderItens();
+}
+
+function adicionarLinhaVazia() {
+  itens.push({desc:'', un:'m²', qtd:1, unit:0});
+  renderItens();
+  // Foca no último input de descrição
+  setTimeout(() => {
+    const inputs = document.querySelectorAll('#tbody-itens input[type=text]');
+    if (inputs.length) inputs[inputs.length-1].focus();
+  }, 50);
+}
+
+function calcTotais() {
+  const sub = itens.reduce((a,b) => a + (b.qtd*b.unit), 0);
+  const descPct = parseFloat(document.getElementById('inp-desconto').value)||0;
+  const bdiPct = parseFloat(document.getElementById('inp-bdi').value)||0;
+  const desc = sub * descPct / 100;
+  const bdi = (sub - desc) * bdiPct / 100;
+  const total = sub - desc + bdi;
+
+  document.getElementById('tot-sub').textContent = fmt(sub);
+  document.getElementById('tot-desc').textContent = '- ' + fmt(desc);
+  document.getElementById('tot-bdi').textContent = '+ ' + fmt(bdi);
+  document.getElementById('tot-geral').textContent = fmt(total);
+  document.getElementById('lbl-desc').textContent = `Desconto (${descPct}%)`;
+  document.getElementById('lbl-bdi').textContent = `BDI/Encargos (${bdiPct}%)`;
+}
+
+// ─── PASSO 3 → 4: DADOS DO CLIENTE ───────────────────────────────────────────
+function irParaDados() {
+  // Preenche data atual se vazia
+  if (!document.getElementById('inp-data').value) {
+    const hoje = new Date();
+    document.getElementById('inp-data').value =
+      String(hoje.getDate()).padStart(2,'0') + '/' +
+      String(hoje.getMonth()+1).padStart(2,'0') + '/' +
+      hoje.getFullYear();
+  }
+  if (!document.getElementById('inp-validade').value)
+    document.getElementById('inp-validade').value = '30 dias';
+  if (!document.getElementById('inp-pgto').value)
+    document.getElementById('inp-pgto').value = '50% na aprovação, 50% na conclusão';
+
+  irPara(4);
+}
+
+// ─── GERAR ORÇAMENTO ──────────────────────────────────────────────────────────
+function gerarOrcamento() {
+  // Preencher preview
+  const cliente = document.getElementById('inp-cliente').value || '—';
+  document.getElementById('orc-cliente').textContent = cliente;
+  document.getElementById('orc-assin-cliente').textContent = cliente;
+  document.getElementById('orc-cpf').textContent = document.getElementById('inp-cpf-cliente').value;
+  document.getElementById('orc-endereco').textContent = document.getElementById('inp-endereco').value;
+  document.getElementById('orc-data').textContent = document.getElementById('inp-data').value || '—';
+  document.getElementById('orc-ref').textContent = document.getElementById('inp-ref').value || '—';
+  document.getElementById('orc-prazo').textContent = document.getElementById('inp-prazo').value || '—';
+  document.getElementById('orc-pgto').textContent = document.getElementById('inp-pgto').value || '—';
+  document.getElementById('orc-validade').textContent = document.getElementById('inp-validade').value || '30 dias';
+
+  // Número do orçamento
+  const num = 'ORC-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random()*900)+100);
+  document.getElementById('orc-num').textContent = `Nº ${num} · Emitido em ${document.getElementById('inp-data').value}`;
+
+  // Tabela
+  const tbody = document.getElementById('orc-tbody');
+  tbody.innerHTML = '';
+  itens.forEach((item, idx) => {
+    if (!item.desc && item.unit===0) return;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td style="text-align:center;color:var(--text2);">${idx+1}</td>
+      <td>${item.desc || '—'}</td>
+      <td style="text-align:center;">${item.un}</td>
+      <td style="text-align:center;">${Number(item.qtd).toLocaleString('pt-BR')}</td>
+      <td style="text-align:right;">${fmt(item.unit)}</td>
+      <td style="text-align:right;font-weight:700;">${fmt(item.qtd*item.unit)}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // Totais preview
+  const sub = itens.reduce((a,b) => a + (b.qtd*b.unit), 0);
+  const descPct = parseFloat(document.getElementById('inp-desconto').value)||0;
+  const bdiPct = parseFloat(document.getElementById('inp-bdi').value)||0;
+  const desc = sub * descPct / 100;
+  const bdi = (sub - desc) * bdiPct / 100;
+  const total = sub - desc + bdi;
+
+  document.getElementById('orc-sub').textContent = fmt(sub);
+  document.getElementById('orc-desc-val').textContent = '- ' + fmt(desc);
+  document.getElementById('orc-bdi-val').textContent = '+ ' + fmt(bdi);
+  document.getElementById('orc-total-geral').textContent = fmt(total);
+  document.getElementById('orc-lbl-desc').textContent = `Desconto (${descPct}%)`;
+  document.getElementById('orc-lbl-bdi').textContent = `BDI/Encargos (${bdiPct}%)`;
+  document.getElementById('orc-row-desc').style.display = descPct > 0 ? '' : 'none';
+  document.getElementById('orc-row-bdi').style.display = bdiPct > 0 ? '' : 'none';
+
+  // Obs
+  const obs = document.getElementById('inp-obs').value.trim();
+  document.getElementById('orc-obs-block').style.display = obs ? 'block' : 'none';
+  document.getElementById('orc-obs').textContent = obs;
+
+  // Mostrar
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.step-item').forEach(s => { s.classList.remove('active'); s.classList.add('done'); });
+  document.getElementById('preview-area').style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+function novoOrcamento() {
+  servicosSelecionados.clear();
+  itens = [];
+  document.getElementById('txt-entrada').value = '';
+  irPara(1);
+}
+
+// Init
+renderCatalogo();
+</script>
+</body>
+</html>

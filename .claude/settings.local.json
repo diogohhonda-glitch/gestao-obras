@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /c/Windows/Fonts -iname *.ttf -o -iname *.otf)",
+      "Bash(xargs -I{} basename {})",
+      "Bash(netlify --version)",
+      "Bash(SITE_ID=\"d4b21dd9-c2aa-4e34-9d57-6fce85890311\" TOKEN=\"nfc_QZoDD3XRUe9soeXJCjSxB7EsN3QFAW5N9ca9\" __NEW_LINE_5edfc3c485abfb93__ curl -s -X POST \"https://api.netlify.com/api/v1/sites/$SITE_ID/deploys\" -H \"Authorization: Bearer $TOKEN\" -H \"Content-Type: application/zip\" --data-binary @\"c:/Windows/Temp/Diogo/deploy.zip\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(''''Deploy ID:'''', d.get\\(''''id''''\\)\\); print\\(''''State:'''', d.get\\(''''state''''\\)\\); print\\(''''URL:'''', d.get\\(''''deploy_ssl_url''''\\) or d.get\\(''''url''''\\)\\)\")",
+      "Bash(cp \"c:/Windows/Temp/Diogo/imper-solucoes.html\" \"c:/Windows/Temp/Diogo/index.html\")",
+      "Bash(netlify deploy:*)",
+      "Bash(ls c:/Windows/Temp/Diogo/*.key)",
+      "Bash(npx vercel:*)",
+      "Bash(curl -s -I \"https://www.tacko.com.br\")",
+      "Bash(nslookup -type=NS impersolucoes.com.br)",
+      "Bash(python:*)",
+      "WebFetch(domain:adequada.eng.br)",
+      "WebFetch(domain:estudatec.com.br)",
+      "WebFetch(domain:iaco.com.br)",
+      "WebSearch",
+      "WebFetch(domain:kultivi.com)"
+    ]
+  }
+}

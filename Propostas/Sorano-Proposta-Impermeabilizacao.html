@@ -1,0 +1,1762 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposta Comercial — Impermeabilização SORANO</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; color: #222; background: #f5f5f5; }
+
+  /* ───── PRINT ───── */
+  @media print {
+    body { background: #fff; font-size: 11px; }
+    .no-print { display: none !important; }
+    .page { box-shadow: none; margin: 0; border-radius: 0; }
+    .page-break { page-break-before: always; }
+  }
+
+  /* ───── LAYOUT ───── */
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    background: #fff;
+    margin: 20px auto;
+    padding: 20mm 18mm;
+    box-shadow: 0 2px 12px rgba(0,0,0,.15);
+    border-radius: 4px;
+    position: relative;
+  }
+
+  /* ───── HEADER ───── */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 3px solid #1a3a5c;
+    padding-bottom: 14px;
+    margin-bottom: 20px;
+  }
+  .logo-area h1 { font-size: 22px; color: #1a3a5c; letter-spacing: 1px; font-weight: 800; }
+  .logo-area p  { font-size: 11px; color: #555; margin-top: 2px; }
+  .doc-id { text-align: right; }
+  .doc-id .badge {
+    background: #1a3a5c; color: #fff;
+    padding: 4px 10px; border-radius: 4px;
+    font-size: 11px; font-weight: 700; letter-spacing: .5px;
+  }
+  .doc-id p { font-size: 10px; color: #777; margin-top: 5px; }
+
+  /* ───── SECTION TITLES ───── */
+  h2 {
+    font-size: 13px; font-weight: 700; color: #1a3a5c;
+    border-left: 4px solid #e87722;
+    padding-left: 8px; margin: 22px 0 10px;
+    text-transform: uppercase; letter-spacing: .5px;
+  }
+  h3 { font-size: 12px; font-weight: 700; color: #333; margin: 14px 0 6px; }
+
+  /* ───── COVER BLOCK ───── */
+  .cover-title {
+    text-align: center;
+    background: linear-gradient(135deg, #1a3a5c 0%, #2a5a8c 100%);
+    color: #fff;
+    padding: 30px 20px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+  }
+  .cover-title h1 { font-size: 26px; letter-spacing: 2px; margin-bottom: 6px; }
+  .cover-title h2 { font-size: 16px; font-weight: 400; color: #b0cfef; border: none; padding: 0; text-transform: none; }
+  .cover-title .obra { font-size: 30px; font-weight: 900; color: #fff; margin: 12px 0 4px; }
+
+  /* ───── INFO GRID ───── */
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .info-box {
+    background: #f8f9fb;
+    border: 1px solid #dde3ed;
+    border-radius: 6px;
+    padding: 10px 14px;
+  }
+  .info-box .label { font-size: 10px; color: #888; font-weight: 600; text-transform: uppercase; letter-spacing: .4px; }
+  .info-box .value { font-size: 13px; font-weight: 700; color: #1a3a5c; margin-top: 2px; }
+  .info-box .sub   { font-size: 11px; color: #555; }
+
+  /* ───── ETAPA CARD ───── */
+  .etapa-card {
+    border: 1px solid #dde3ed;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .etapa-header {
+    background: #1a3a5c;
+    color: #fff;
+    padding: 8px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .etapa-header .etapa-num { font-size: 11px; opacity: .7; }
+  .etapa-header .etapa-name { font-size: 13px; font-weight: 700; }
+  .etapa-header .etapa-date { font-size: 11px; background: rgba(255,255,255,.15); padding: 2px 8px; border-radius: 3px; }
+
+  /* ───── TABLES ───── */
+  table { width: 100%; border-collapse: collapse; font-size: 11.5px; margin-bottom: 10px; }
+  th {
+    background: #2a5a8c; color: #fff;
+    padding: 6px 8px; text-align: left;
+    font-size: 10px; text-transform: uppercase; letter-spacing: .3px;
+  }
+  td { padding: 5px 8px; border-bottom: 1px solid #eee; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #f8f9fb; }
+  .tr-subtotal td { background: #e8f0f8 !important; font-weight: 700; color: #1a3a5c; border-top: 2px solid #2a5a8c; }
+  .tr-total td { background: #1a3a5c !important; color: #fff !important; font-weight: 700; font-size: 12px; }
+  .num { text-align: right; }
+  .bold { font-weight: 700; }
+
+  /* ───── TOTAL BOX ───── */
+  .total-box {
+    background: linear-gradient(135deg, #1a3a5c, #2a5a8c);
+    color: #fff;
+    border-radius: 8px;
+    padding: 18px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+  .total-box .label { font-size: 12px; opacity: .8; }
+  .total-box .value { font-size: 28px; font-weight: 900; }
+
+  /* ───── CRONOGRAMA ───── */
+  .gantt-wrap { overflow-x: auto; }
+  .gantt { width: 100%; border-collapse: collapse; font-size: 10px; }
+  .gantt th { background: #2a5a8c; color: #fff; padding: 5px 4px; text-align: center; font-size: 9px; border: 1px solid #1a3a5c; }
+  .gantt td { border: 1px solid #dde3ed; padding: 4px 6px; }
+  .gantt .etapa-col { background: #f0f4f9; font-weight: 600; color: #1a3a5c; min-width: 130px; }
+  .bar { background: #e87722; border-radius: 3px; height: 16px; display: flex; align-items: center; justify-content: center; font-size: 8px; color: #fff; font-weight: 700; white-space: nowrap; }
+  .bar-mob { background: #1a3a5c; }
+  .bar-mob2 { background: #4a7aac; }
+  .bar-prep { background: #8aaa9c; }
+
+  /* ───── PROCESS STEPS ───── */
+  .steps { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .step-card {
+    border: 1px solid #dde3ed;
+    border-radius: 6px;
+    padding: 10px 12px;
+  }
+  .step-card h4 { font-size: 11px; color: #1a3a5c; font-weight: 700; margin-bottom: 6px; border-bottom: 1px dashed #dde3ed; padding-bottom: 4px; }
+  .step-list { list-style: none; }
+  .step-list li {
+    padding: 2px 0 2px 18px;
+    position: relative;
+    font-size: 10.5px;
+    color: #444;
+    line-height: 1.4;
+  }
+  .step-list li::before {
+    content: attr(data-n);
+    position: absolute; left: 0;
+    background: #e87722; color: #fff;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    font-size: 8px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    top: 3px;
+  }
+
+  /* ───── TEAM ───── */
+  .team-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .team-card {
+    background: #f0f4f9;
+    border: 1px solid #dde3ed;
+    border-radius: 6px;
+    padding: 10px 8px;
+    text-align: center;
+  }
+  .team-card .icon { font-size: 22px; margin-bottom: 4px; }
+  .team-card .role { font-size: 9px; color: #1a3a5c; font-weight: 700; text-transform: uppercase; line-height: 1.3; }
+  .team-card .qty  { font-size: 18px; font-weight: 900; color: #e87722; }
+
+  /* ───── CONDITIONS ───── */
+  .cond-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .cond-item { display: flex; gap: 8px; align-items: flex-start; padding: 8px; background: #f8f9fb; border-radius: 6px; border: 1px solid #dde3ed; }
+  .cond-item .icon { font-size: 18px; flex-shrink: 0; }
+  .cond-item strong { display: block; font-size: 10px; color: #1a3a5c; text-transform: uppercase; margin-bottom: 2px; }
+  .cond-item span { font-size: 10.5px; color: #444; line-height: 1.4; }
+
+  /* ───── FOOTER ───── */
+  .footer {
+    border-top: 2px solid #1a3a5c;
+    margin-top: 30px;
+    padding-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .footer p { font-size: 9px; color: #999; }
+  .sign-area { text-align: center; }
+  .sign-line { border-top: 1px solid #333; width: 200px; margin: 30px auto 4px; }
+  .sign-area p { font-size: 10px; color: #444; }
+
+  /* ───── PILL ───── */
+  .pill {
+    display: inline-block;
+    background: #e87722;
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 1px 7px;
+    border-radius: 20px;
+    margin-left: 4px;
+    vertical-align: middle;
+  }
+  .pill-blue { background: #2a5a8c; }
+
+  /* ───── HIGHLIGHT ───── */
+  .highlight { background: #fff8e7; border-left: 3px solid #e87722; padding: 8px 12px; border-radius: 0 6px 6px 0; margin-bottom: 10px; font-size: 11px; color: #555; }
+
+  /* ───── MATERIAL TABLE special ───── */
+  .mat-table th { background: #4a7aac; }
+  .mat-table .cat-row td { background: #1a3a5c !important; color: #fff !important; font-weight: 700; font-size: 11px; }
+
+  /* ───── BUTTONS (no-print) ───── */
+  .toolbar {
+    text-align: center;
+    margin: 16px 0;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+  .btn {
+    background: #1a3a5c; color: #fff;
+    border: none; padding: 10px 24px;
+    border-radius: 6px; font-size: 13px;
+    cursor: pointer; font-weight: 600;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .btn:hover { background: #2a5a8c; }
+  .btn-secondary { background: #e87722; }
+  .btn-secondary:hover { background: #c4621a; }
+</style>
+</head>
+<body>
+
+<!-- TOOLBAR (no print) -->
+<div class="toolbar no-print">
+  <button class="btn" onclick="window.print()">🖨️ Imprimir / Exportar PDF</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     PÁGINA 1 — CAPA
+═══════════════════════════════════════════════════════════════════ -->
+<div class="page">
+
+  <div class="header">
+    <div class="logo-area">
+      <h1>IMPER SOLUÇÕES</h1>
+      <p>Impermeabilização Profissional · Curitiba – PR</p>
+    </div>
+    <div class="doc-id">
+      <div class="badge">PROPOSTA COMERCIAL</div>
+      <p>N.º PC-2026-SORANO</p>
+      <p>Data: 28/03/2026</p>
+      <p>Validade: 30 dias</p>
+    </div>
+  </div>
+
+  <!-- CAPA -->
+  <div class="cover-title">
+    <h2>Proposta de Serviço e Material de Impermeabilização</h2>
+    <div class="obra">SORANO</div>
+    <p style="font-size:12px; color:#b0cfef; margin-top:4px;">Embasamento · Torres A e B · Coberturas</p>
+  </div>
+
+  <!-- INFO GRID -->
+  <div class="info-grid">
+    <div class="info-box">
+      <div class="label">Obra</div>
+      <div class="value">SORANO</div>
+    </div>
+    <div class="info-box">
+      <div class="label">Endereço</div>
+      <div class="value">Av. Rep. Argentina, 4483</div>
+      <div class="sub">Novo Mundo · Curitiba – PR · CEP 81050-000</div>
+    </div>
+    <div class="info-box">
+      <div class="label">Composição do empreendimento</div>
+      <div class="value">375 apartamentos · 2 torres · 18 pavimentos/torre</div>
+      <div class="sub">3 pav. embasamento + 15 pav. tipo</div>
+    </div>
+    <div class="info-box">
+      <div class="label">Escopo contratado</div>
+      <div class="value">Impermeabilização completa</div>
+      <div class="sub">Reservatórios · Terraços · Área externa · Coberturas · Esquadrias</div>
+    </div>
+    <div class="info-box">
+      <div class="label">Área total impermeabilizada</div>
+      <div class="value">4.555,80 m²</div>
+      <div class="sub">Planilha de levantamento — 4 etapas</div>
+    </div>
+    <div class="info-box">
+      <div class="label">Equipe prevista</div>
+      <div class="value">5 profissionais</div>
+      <div class="sub">1 encarregado + 2 impermeabilizadores + 2 auxiliares</div>
+    </div>
+    <div class="info-box">
+      <div class="label">Início previsto</div>
+      <div class="value">13/07/2026</div>
+      <div class="sub">1ª etapa — Reservatórios Térreo</div>
+    </div>
+    <div class="info-box">
+      <div class="label">Conclusão prevista</div>
+      <div class="value">25/01/2027</div>
+      <div class="sub">4ª etapa — Cobertura / Reservatórios</div>
+    </div>
+  </div>
+
+  <h2>Resumo dos Sistemas Especificados</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Sistema</th>
+        <th>Descrição</th>
+        <th class="num">Área Total (m²)</th>
+        <th>Aplicação</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="bold">2.8.6</td>
+        <td>Argamassa polimérica bicamada + Membrana acrílica c/ cimento e fibras</td>
+        <td class="num">786,22</td>
+        <td>Reservatórios (internos)</td>
+      </tr>
+      <tr>
+        <td class="bold">6.8.1</td>
+        <td>Membrana epóxi poliamida bicamada</td>
+        <td class="num">117,77</td>
+        <td>Teto dos reservatórios</td>
+      </tr>
+      <tr>
+        <td class="bold">4.2.4</td>
+        <td>Manta asfáltica 4mm aderida c/ asfalto oxidado + proteção mecânica</td>
+        <td class="num">2.120,20</td>
+        <td>Terraços privativos · Circulação ext.</td>
+      </tr>
+      <tr>
+        <td class="bold">4.5.3</td>
+        <td>Manta asfáltica 4mm + emulsão antiraiz + proteção mecânica</td>
+        <td class="num">1.201,70</td>
+        <td>Floreiras · Bancos</td>
+      </tr>
+      <tr>
+        <td class="bold">Esq.</td>
+        <td>Impermeabilização de janelas, portas e venezianas (vedante poliuretânico)</td>
+        <td class="num">329,92</td>
+        <td>Embasamento · Torres 1 e 2</td>
+      </tr>
+      <tr class="tr-subtotal">
+        <td colspan="2"><strong>TOTAL GERAL</strong></td>
+        <td class="num"><strong>4.555,81 m²</strong></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="footer">
+    <p>Imper Soluções · Proposta PC-2026-SORANO · Emitida em 28/03/2026 · Página 1/5</p>
+    <p>Documento gerado eletronicamente — válido por 30 dias a partir da emissão</p>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════
+     PÁGINA 2 — ORÇAMENTO DETALHADO POR ETAPA
+═══════════════════════════════════════════════════════════════════ -->
+<div class="page page-break">
+
+  <div class="header">
+    <div class="logo-area">
+      <h1>IMPER SOLUÇÕES</h1>
+      <p>Proposta PC-2026-SORANO · SORANO</p>
+    </div>
+    <div class="doc-id">
+      <div class="badge">ORÇAMENTO DETALHADO</div>
+      <p>Página 2 / 5</p>
+    </div>
+  </div>
+
+  <h2>Orçamento Detalhado por Etapa</h2>
+  <p style="font-size:10.5px; color:#555; margin-bottom:14px;">
+    Preços unitários incluem: material, mão de obra especializada, ferramentas, EPI, consumíveis e BDI de 25%.
+    Proteção mecânica inclusa nos sistemas 4.2.4 e 4.5.3.
+  </p>
+
+  <!-- ETAPA 1 -->
+  <div class="etapa-card">
+    <div class="etapa-header">
+      <div>
+        <div class="etapa-num">1ª ETAPA</div>
+        <div class="etapa-name">Reservatórios — Térreo e 3º Pavimento (Embasamento)</div>
+      </div>
+      <div class="etapa-date">Necessidade: 13/07/2026 · Prazo execução: 15 dias úteis</div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Local / Ambiente</th>
+          <th>Sistema</th>
+          <th class="num">Área (m²)</th>
+          <th class="num">Unitário (R$)</th>
+          <th class="num">Total (R$)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Reservatório — Cisterna 1 (Térreo)</td>
+          <td>2.8.6</td>
+          <td class="num">75,04</td>
+          <td class="num">98,00</td>
+          <td class="num">7.353,92</td>
+        </tr>
+        <tr>
+          <td>Reservatório — Cisterna 2 (Térreo)</td>
+          <td>2.8.6</td>
+          <td class="num">75,04</td>
+          <td class="num">98,00</td>
+          <td class="num">7.353,92</td>
+        </tr>
+        <tr>
+          <td>Caixa de Cheias 1 (Térreo)</td>
+          <td>2.8.6</td>
+          <td class="num">24,40</td>
+          <td class="num">98,00</td>
+          <td class="num">2.391,20</td>
+        </tr>
+        <tr>
+          <td>Caixa de Cheias 2 (Térreo)</td>
+          <td>2.8.6</td>
+          <td class="num">24,40</td>
+          <td class="num">98,00</td>
+          <td class="num">2.391,20</td>
+        </tr>
+        <tr>
+          <td>Caixa de Cheias 3 (Térreo)</td>
+          <td>2.8.6</td>
+          <td class="num">24,40</td>
+          <td class="num">98,00</td>
+          <td class="num">2.391,20</td>
+        </tr>
+        <tr>
+          <td>Caixa de Cheias 4 (Térreo)</td>
+          <td>2.8.6</td>
+          <td class="num">24,40</td>
+          <td class="num">98,00</td>
+          <td class="num">2.391,20</td>
+        </tr>
+        <tr>
+          <td>Reservatório Reuso — Paredes + Piso (3º Pvto)</td>
+          <td>2.8.6</td>
+          <td class="num">222,52</td>
+          <td class="num">98,00</td>
+          <td class="num">21.806,96</td>
+        </tr>
+        <tr>
+          <td>Teto do Reservatório Reuso (3º Pvto)</td>
+          <td>6.8.1</td>
+          <td class="num">72,41</td>
+          <td class="num">185,00</td>
+          <td class="num">13.395,85</td>
+        </tr>
+        <tr class="tr-subtotal">
+          <td colspan="2"><strong>SUBTOTAL 1ª ETAPA</strong></td>
+          <td class="num"><strong>542,61</strong></td>
+          <td class="num"></td>
+          <td class="num"><strong>R$ 59.475,45</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ETAPA 2 -->
+  <div class="etapa-card">
+    <div class="etapa-header">
+      <div>
+        <div class="etapa-num">2ª ETAPA</div>
+        <div class="etapa-name">4º Pavimento — Terraços Privativos (Gardens)</div>
+      </div>
+      <div class="etapa-date">Necessidade: 18/08/2026 · Prazo execução: 10 dias úteis</div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Local / Ambiente</th>
+          <th>Sistema</th>
+          <th class="num">Área (m²)</th>
+          <th class="num">Unitário (R$)</th>
+          <th class="num">Total (R$)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Terraços Privativos — Aptos. Finais 02 ao 12 (14 unidades)</td>
+          <td>4.2.4</td>
+          <td class="num">288,99</td>
+          <td class="num">118,00</td>
+          <td class="num">34.100,82</td>
+        </tr>
+        <tr class="tr-subtotal">
+          <td colspan="2"><strong>SUBTOTAL 2ª ETAPA</strong></td>
+          <td class="num"><strong>288,99</strong></td>
+          <td class="num"></td>
+          <td class="num"><strong>R$ 34.100,82</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ETAPA 3 -->
+  <div class="etapa-card">
+    <div class="etapa-header">
+      <div>
+        <div class="etapa-num">3ª ETAPA</div>
+        <div class="etapa-name">4º Pavimento — Área Externa (Floreiras, Bancos e Circulação)</div>
+      </div>
+      <div class="etapa-date">Necessidade: 16/09/2026 · Prazo execução: 22 dias úteis</div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Local / Ambiente</th>
+          <th>Sistema</th>
+          <th class="num">Área (m²)</th>
+          <th class="num">Unitário (R$)</th>
+          <th class="num">Total (R$)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Floreiras — Área Externa 4º Pvto (23 floreiras)</td>
+          <td>4.5.3</td>
+          <td class="num">1.065,64</td>
+          <td class="num">132,00</td>
+          <td class="num">140.664,48</td>
+        </tr>
+        <tr>
+          <td>Bancos — Área Externa 4º Pvto (6 elementos)</td>
+          <td>4.5.3</td>
+          <td class="num">136,06</td>
+          <td class="num">132,00</td>
+          <td class="num">17.959,92</td>
+        </tr>
+        <tr>
+          <td>Circulação — Área Externa 4º Pvto</td>
+          <td>4.2.4</td>
+          <td class="num">1.831,20</td>
+          <td class="num">118,00</td>
+          <td class="num">216.081,60</td>
+        </tr>
+        <tr class="tr-subtotal">
+          <td colspan="2"><strong>SUBTOTAL 3ª ETAPA</strong></td>
+          <td class="num"><strong>3.032,90</strong></td>
+          <td class="num"></td>
+          <td class="num"><strong>R$ 374.706,00</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ETAPA 4 -->
+  <div class="etapa-card">
+    <div class="etapa-header">
+      <div>
+        <div class="etapa-num">4ª ETAPA</div>
+        <div class="etapa-name">Cobertura — Reservatórios Blocos 01 e 02</div>
+      </div>
+      <div class="etapa-date">Necessidade: 11/01/2027 · Prazo execução: 10 dias úteis</div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Local / Ambiente</th>
+          <th>Sistema</th>
+          <th class="num">Área (m²)</th>
+          <th class="num">Unitário (R$)</th>
+          <th class="num">Total (R$)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Bloco 01 — Reservatório (Cobertura)</td>
+          <td>2.8.6</td>
+          <td class="num">72,75</td>
+          <td class="num">98,00</td>
+          <td class="num">7.129,50</td>
+        </tr>
+        <tr>
+          <td>Bloco 01 — Reservatório 2 (Cobertura)</td>
+          <td>2.8.6</td>
+          <td class="num">71,57</td>
+          <td class="num">98,00</td>
+          <td class="num">7.013,86</td>
+        </tr>
+        <tr>
+          <td>Bloco 01 — Teto do Reservatório</td>
+          <td>6.8.1</td>
+          <td class="num">22,55</td>
+          <td class="num">185,00</td>
+          <td class="num">4.171,75</td>
+        </tr>
+        <tr>
+          <td>Bloco 02 — Reservatório (Cobertura)</td>
+          <td>2.8.6</td>
+          <td class="num">85,86</td>
+          <td class="num">98,00</td>
+          <td class="num">8.414,28</td>
+        </tr>
+        <tr>
+          <td>Bloco 02 — Reservatório 2 (Cobertura)</td>
+          <td>2.8.6</td>
+          <td class="num">85,86</td>
+          <td class="num">98,00</td>
+          <td class="num">8.414,28</td>
+        </tr>
+        <tr>
+          <td>Bloco 02 — Teto do Reservatório</td>
+          <td>6.8.1</td>
+          <td class="num">22,81</td>
+          <td class="num">185,00</td>
+          <td class="num">4.219,85</td>
+        </tr>
+        <tr class="tr-subtotal">
+          <td colspan="2"><strong>SUBTOTAL 4ª ETAPA</strong></td>
+          <td class="num"><strong>361,40</strong></td>
+          <td class="num"></td>
+          <td class="num"><strong>R$ 39.363,52</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- JANELAS -->
+  <div class="etapa-card">
+    <div class="etapa-header" style="background:#4a7aac;">
+      <div>
+        <div class="etapa-num">COMPLEMENTAR</div>
+        <div class="etapa-name">Impermeabilização de Esquadrias (Janelas, Portas e Venezianas)</div>
+      </div>
+      <div class="etapa-date">Distribuída nas etapas correspondentes</div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Local / Escopo</th>
+          <th>Sistema</th>
+          <th class="num">Área (m²)</th>
+          <th class="num">Unitário (R$)</th>
+          <th class="num">Total (R$)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Janelas, portas e venezianas — Embasamento + Torres 1 e 2 (todos os pav.)</td>
+          <td>MAP + Selador Elast. (ITS008 §6.3/§6.4/§6.7)</td>
+          <td class="num">329,92</td>
+          <td class="num">78,00</td>
+          <td class="num">25.733,76</td>
+        </tr>
+        <tr class="tr-subtotal">
+          <td colspan="2"><strong>SUBTOTAL ESQUADRIAS</strong></td>
+          <td class="num"><strong>329,92</strong></td>
+          <td class="num"></td>
+          <td class="num"><strong>R$ 25.733,76</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SERV. COMP. -->
+  <table>
+    <thead>
+      <tr>
+        <th colspan="2">Serviços Complementares</th>
+        <th class="num">Total (R$)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="2">Mobilização e desmobilização de equipe e equipamentos</td>
+        <td class="num">8.000,00</td>
+      </tr>
+      <tr class="tr-subtotal">
+        <td colspan="2"><strong>SUBTOTAL SERVIÇOS COMPLEMENTARES</strong></td>
+        <td class="num"><strong>R$ 8.000,00</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- COMPOSIÇÃO MATERIAL X MÃO DE OBRA -->
+  <h2 style="margin-top:20px;">Composição de Custos — Material × Mão de Obra</h2>
+  <p style="font-size:10.5px; color:#555; margin-bottom:10px;">Todos os preços incluem BDI de 25% (impostos, administração central e lucro). Valores em R$/m².</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Sistema</th>
+        <th class="num">Área (m²)</th>
+        <th class="num">Material (R$/m²)</th>
+        <th class="num">Mão de Obra (R$/m²)</th>
+        <th class="num">BDI 25%</th>
+        <th class="num">Total (R$/m²)</th>
+        <th class="num">Total (R$)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>2.8.6 — Argamassa polimérica + Membrana acrílica</td>
+        <td class="num">785,84</td>
+        <td class="num">39,40</td>
+        <td class="num">38,96</td>
+        <td class="num">19,64</td>
+        <td class="num"><strong>98,00</strong></td>
+        <td class="num">77.012,32</td>
+      </tr>
+      <tr>
+        <td>6.8.1 — Epóxi poliamida bicamada</td>
+        <td class="num">117,77</td>
+        <td class="num">83,20</td>
+        <td class="num">61,80</td>
+        <td class="num">40,00</td>
+        <td class="num"><strong>185,00</strong></td>
+        <td class="num">21.787,45</td>
+      </tr>
+      <tr>
+        <td>4.2.4 — Manta asfáltica 4mm + Proteção mecânica</td>
+        <td class="num">2.120,19</td>
+        <td class="num">47,60</td>
+        <td class="num">46,80</td>
+        <td class="num">23,60</td>
+        <td class="num"><strong>118,00</strong></td>
+        <td class="num">250.182,42</td>
+      </tr>
+      <tr>
+        <td>4.5.3 — Manta + Antiraiz + Proteção mecânica</td>
+        <td class="num">1.201,70</td>
+        <td class="num">53,20</td>
+        <td class="num">52,00</td>
+        <td class="num">26,80</td>
+        <td class="num"><strong>132,00</strong></td>
+        <td class="num">158.624,40</td>
+      </tr>
+      <tr>
+        <td>MAP + Selador Elastomérico — Esquadrias (ITS008)</td>
+        <td class="num">329,92</td>
+        <td class="num">21,40</td>
+        <td class="num">40,96</td>
+        <td class="num">15,64</td>
+        <td class="num"><strong>78,00</strong></td>
+        <td class="num">25.733,76</td>
+      </tr>
+      <tr>
+        <td>Mobilização / Desmobilização</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+        <td class="num">8.000,00</td>
+      </tr>
+      <tr class="tr-subtotal">
+        <td colspan="5"><strong>TOTAIS</strong></td>
+        <td class="num"><strong>4.555,42 m²</strong></td>
+        <td class="num"><strong>R$ 541.340,35</strong></td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin:12px 0;">
+    <div class="info-box">
+      <div class="label">Total Material</div>
+      <div class="value">R$ 249.016,55</div>
+      <div class="sub">46% do valor total</div>
+    </div>
+    <div class="info-box">
+      <div class="label">Total Mão de Obra</div>
+      <div class="value">R$ 183.817,24</div>
+      <div class="sub">34% do valor total</div>
+    </div>
+    <div class="info-box">
+      <div class="label">BDI (25%) + Mobilização</div>
+      <div class="value">R$ 108.506,56</div>
+      <div class="sub">20% do valor total</div>
+    </div>
+  </div>
+
+  <!-- TOTAL GERAL -->
+  <div class="total-box">
+    <div>
+      <div class="label">VALOR TOTAL DA PROPOSTA</div>
+      <div style="font-size:11px; opacity:.7; margin-top:2px;">Inclui material · mão de obra · BDI · mobilização</div>
+    </div>
+    <div class="value">R$ 541.379,55</div>
+  </div>
+
+  <div class="footer">
+    <p>Imper Soluções · Proposta PC-2026-SORANO · Emitida em 28/03/2026 · Página 2/5</p>
+    <p>Preços válidos por 30 dias · Sujeitos a reajuste conforme INCC após este período</p>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════
+     PÁGINA 3 — CRONOGRAMA + EQUIPE + MATERIAIS
+═══════════════════════════════════════════════════════════════════ -->
+<div class="page page-break">
+
+  <div class="header">
+    <div class="logo-area">
+      <h1>IMPER SOLUÇÕES</h1>
+      <p>Proposta PC-2026-SORANO · SORANO</p>
+    </div>
+    <div class="doc-id">
+      <div class="badge">CRONOGRAMA E EQUIPE</div>
+      <p>Página 3 / 5</p>
+    </div>
+  </div>
+
+  <h2>Cronograma de Execução — 5 Profissionais</h2>
+
+  <div class="gantt-wrap">
+    <table class="gantt">
+      <thead>
+        <tr>
+          <th style="min-width:140px;">Atividade</th>
+          <th>Jul/26<br>S1</th>
+          <th>Jul/26<br>S2</th>
+          <th>Jul/26<br>S3</th>
+          <th>Ago/26<br>S1</th>
+          <th>Ago/26<br>S2</th>
+          <th>Ago/26<br>S3</th>
+          <th>Set/26<br>S1</th>
+          <th>Set/26<br>S2</th>
+          <th>Set/26<br>S3</th>
+          <th>Out/26<br>S1</th>
+          <th>Out/26<br>S2</th>
+          <th>Nov–Dez<br>/26</th>
+          <th>Jan/27<br>S1</th>
+          <th>Jan/27<br>S2</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="etapa-col">Mobilização Geral</td>
+          <td><div class="bar bar-mob">MOB</div></td>
+          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        </tr>
+        <tr>
+          <td class="etapa-col">1ª Etapa — Reservatórios Térreo/3º</td>
+          <td><div class="bar">▉</div></td>
+          <td><div class="bar">▉</div></td>
+          <td><div class="bar">▉</div></td>
+          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        </tr>
+        <tr>
+          <td class="etapa-col">Prova estanqueidade 1ª Etapa</td>
+          <td></td><td></td>
+          <td><div class="bar bar-prep">72h</div></td>
+          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        </tr>
+        <tr>
+          <td class="etapa-col">2ª Etapa — Terraços Gardens</td>
+          <td></td><td></td><td></td>
+          <td><div class="bar">▉</div></td>
+          <td><div class="bar">▉</div></td>
+          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        </tr>
+        <tr>
+          <td class="etapa-col">Esq. Embasamento e Gardens</td>
+          <td></td><td></td><td></td><td></td>
+          <td><div class="bar bar-mob2">▉</div></td>
+          <td><div class="bar bar-mob2">▉</div></td>
+          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        </tr>
+        <tr>
+          <td class="etapa-col">3ª Etapa — Área Externa (Floreiras/Bancos)</td>
+          <td></td><td></td><td></td><td></td><td></td><td></td>
+          <td><div class="bar">▉</div></td>
+          <td><div class="bar">▉</div></td>
+          <td><div class="bar">▉</div></td>
+          <td></td><td></td><td></td><td></td><td></td>
+        </tr>
+        <tr>
+          <td class="etapa-col">3ª Etapa — Circulação</td>
+          <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+          <td><div class="bar">▉</div></td>
+          <td><div class="bar">▉</div></td>
+          <td><div class="bar">▉</div></td>
+          <td><div class="bar">▉</div></td>
+          <td></td><td></td><td></td>
+        </tr>
+        <tr>
+          <td class="etapa-col">Esq. Torres 1 e 2</td>
+          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+          <td><div class="bar bar-mob2">▉</div></td>
+          <td><div class="bar bar-mob2">▉</div></td>
+          <td><div class="bar bar-mob2">▉</div></td>
+          <td></td><td></td>
+        </tr>
+        <tr>
+          <td class="etapa-col">4ª Etapa — Coberturas/Reservatórios</td>
+          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+          <td><div class="bar">▉</div></td>
+          <td><div class="bar">▉</div></td>
+        </tr>
+        <tr>
+          <td class="etapa-col">Desmobilização</td>
+          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+          <td><div class="bar bar-mob">DM</div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="display:flex; gap:16px; margin:10px 0 18px; font-size:10px; flex-wrap:wrap;">
+    <span><span style="display:inline-block; width:14px; height:14px; background:#e87722; border-radius:2px; vertical-align:middle;"></span> Impermeabilização</span>
+    <span><span style="display:inline-block; width:14px; height:14px; background:#1a3a5c; border-radius:2px; vertical-align:middle;"></span> Mobilização/Desmobilização</span>
+    <span><span style="display:inline-block; width:14px; height:14px; background:#4a7aac; border-radius:2px; vertical-align:middle;"></span> Esquadrias</span>
+    <span><span style="display:inline-block; width:14px; height:14px; background:#8aaa9c; border-radius:2px; vertical-align:middle;"></span> Testes de Estanqueidade</span>
+  </div>
+
+  <h2>Composição da Equipe</h2>
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="icon">👷</div>
+      <div class="qty">1</div>
+      <div class="role">Encarregado / Impermeabilizador Sênior</div>
+    </div>
+    <div class="team-card">
+      <div class="icon">🔨</div>
+      <div class="qty">2</div>
+      <div class="role">Impermeabilizadores Oficiais</div>
+    </div>
+    <div class="team-card">
+      <div class="icon">🧰</div>
+      <div class="qty">2</div>
+      <div class="role">Auxiliares de Impermeabilização</div>
+    </div>
+    <div class="team-card">
+      <div class="icon">📋</div>
+      <div class="qty">1</div>
+      <div class="role">Responsável Técnico (visitas periódicas)</div>
+    </div>
+    <div class="team-card">
+      <div class="icon">🛡️</div>
+      <div class="qty">5</div>
+      <div class="role">Profissionais com NR-35 e NR-6 atualizadas</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:18px;">Produtividade estimada por sistema (equipe de 5 pessoas)</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Sistema</th>
+        <th class="num">Produt. diária (m²/dia)</th>
+        <th class="num">Área total (m²)</th>
+        <th class="num">Dias úteis estimados</th>
+        <th>Observação</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>2.8.6 — Argamassa polimérica</td>
+        <td class="num">~100</td>
+        <td class="num">786,22</td>
+        <td class="num">~8 dias + cura</td>
+        <td>Aguardar 12h entre camadas</td>
+      </tr>
+      <tr>
+        <td>6.8.1 — Epóxi poliamida</td>
+        <td class="num">~80</td>
+        <td class="num">117,77</td>
+        <td class="num">~2 dias + cura</td>
+        <td>Aguardar 8–12h entre demãos</td>
+      </tr>
+      <tr>
+        <td>4.2.4 — Manta asfáltica + prot. mec.</td>
+        <td class="num">~150</td>
+        <td class="num">2.120,20</td>
+        <td class="num">~20 dias</td>
+        <td>Inclui proteção mecânica</td>
+      </tr>
+      <tr>
+        <td>4.5.3 — Manta + antiraiz + prot. mec.</td>
+        <td class="num">~130</td>
+        <td class="num">1.201,70</td>
+        <td class="num">~12 dias</td>
+        <td>Inclui antiraiz e proteção</td>
+      </tr>
+      <tr>
+        <td>Esquadrias — MAP + Selador Elastomérico (ITS008 §6.3/§6.4/§6.7)</td>
+        <td class="num">~45</td>
+        <td class="num">329,92</td>
+        <td class="num">~8 dias</td>
+        <td>2 demãos MAP cruzadas + selador junta perimetral; cura 24-48h por frente</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="footer">
+    <p>Imper Soluções · Proposta PC-2026-SORANO · Emitida em 28/03/2026 · Página 3/5</p>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════
+     PÁGINA 4 — PROCESSO E MATERIAIS
+═══════════════════════════════════════════════════════════════════ -->
+<div class="page page-break">
+
+  <div class="header">
+    <div class="logo-area">
+      <h1>IMPER SOLUÇÕES</h1>
+      <p>Proposta PC-2026-SORANO · SORANO</p>
+    </div>
+    <div class="doc-id">
+      <div class="badge">PROCESSOS E MATERIAIS</div>
+      <p>Página 4 / 5</p>
+    </div>
+  </div>
+
+  <h2>Processos de Execução por Sistema</h2>
+
+  <div class="steps">
+
+    <!-- SISTEMA 2.8.6 -->
+    <div class="step-card">
+      <h4>Sistema 2.8.6 — Argamassa Polimérica + Membrana Acrílica <span class="pill">Reservatórios</span></h4>
+      <ul class="step-list">
+        <li data-n="1">Limpeza e lavagem hidráulica completa da superfície</li>
+        <li data-n="2">Regularização com argamassa de cimento e areia (onde necessário)</li>
+        <li data-n="3">Execução de arredondamentos nos cantos e reentrâncias (meia-cana)</li>
+        <li data-n="4">Aplicação de primer de fundo (compatível com sistema acrílico)</li>
+        <li data-n="5">Umedecer superfície sem acúmulo de água livre — superfície saturada, seca na aparência (SSS)</li>
+        <li data-n="6">1ª demão de argamassa polimérica bicomponente (Viaplus 1000 / Denver ou equiv.), aplicada a trincha em duas direções cruzadas</li>
+        <li data-n="7">Aguardar semi-cura (~2-3h) e assentar tela de poliéster: ralos 30×30 cm (5 cm na parede do tubo + 10 cm no piso), rodapé mín. 20 cm (10 cm parede + 10 cm piso) e cantos vivos</li>
+        <li data-n="8">2ª demão de argamassa polimérica cobrindo integralmente a tela — paredes: mín. 1,5 m no box e 20 cm demais; pisos: cobertura total</li>
+        <li data-n="9">Membrana acrílica com cimento e fibras (Viaplus 7000 ou equiv.) após ±3h da 2ª demão</li>
+        <li data-n="10">Prova de estanqueidade: lâmina d'água mínima de 1 cm por 72h; área bloqueada com cavaletes/fita até liberação</li>
+      </ul>
+    </div>
+
+    <!-- SISTEMA 6.8.1 -->
+    <div class="step-card">
+      <h4>Sistema 6.8.1 — Epóxi Poliamida Bicamada <span class="pill">Tetos de Reservatórios</span></h4>
+      <ul class="step-list">
+        <li data-n="1">Limpeza mecânica / escarificação da superfície</li>
+        <li data-n="2">Regularização e correção de falhas com massa epóxi</li>
+        <li data-n="3">Verificação de pH e umidade (máx. 6% umidade)</li>
+        <li data-n="4">Aplicação de primer epóxi a rolo (2 demãos cruzadas)</li>
+        <li data-n="5">Aguardar cura do primer (mín. 4h)</li>
+        <li data-n="6">1ª demão de epóxi poliamida bicomponente (400 g/m²)</li>
+        <li data-n="7">Aguardar cura (8–12h conforme temperatura)</li>
+        <li data-n="8">2ª demão de epóxi poliamida em direção cruzada (400 g/m²)</li>
+        <li data-n="9">Verificação de continuidade de filme (holiday test)</li>
+        <li data-n="10">Liberação após cura total (72h)</li>
+      </ul>
+    </div>
+
+    <!-- SISTEMA 4.2.4 -->
+    <div class="step-card">
+      <h4>Sistema 4.2.4 — Manta Asfáltica 4mm + Proteção Mecânica <span class="pill">Terraços/Circulação</span></h4>
+      <ul class="step-list">
+        <li data-n="1">Limpeza, varrição e remoção de materiais soltos</li>
+        <li data-n="2">Regularização com caimento mínimo de 1% em direção aos ralos</li>
+        <li data-n="3">Aplicação de primer asfáltico a rolo (0,3 L/m²) — aguardar secagem (2–4h)</li>
+        <li data-n="4">Posicionamento e soldagem da manta asfáltica elastomérica SBS 4mm com maçarico</li>
+        <li data-n="5">Sobreposições mínimas: 10 cm nas laterais, 15 cm nas extremidades</li>
+        <li data-n="6">Reforços duplos em ralos, calhas, rufos e cantos vivos (tiras de 50 cm)</li>
+        <li data-n="7">Prova de estanqueidade (alagamento por 72h)</li>
+        <li data-n="8">Aplicação de proteção mecânica: argamassa de cimento e areia, 3 cm, com tela soldada</li>
+        <li data-n="9">Acabamento e caimento final verificado</li>
+      </ul>
+    </div>
+
+    <!-- SISTEMA 4.5.3 -->
+    <div class="step-card">
+      <h4>Sistema 4.5.3 — Manta + Emulsão Antiraiz + Proteção Mecânica <span class="pill">Floreiras/Bancos</span></h4>
+      <ul class="step-list">
+        <li data-n="1">Limpeza e preparação da superfície (remoção de sujeira e partes friáveis)</li>
+        <li data-n="2">Regularização com caimento ≥ 1% e arredondamento de cantos</li>
+        <li data-n="3">Aplicação de emulsão asfáltica antiraiz (0,5 L/m²) a rolo ou trincha</li>
+        <li data-n="4">Aguardar secagem da emulsão (3–4h ou conforme fabricante)</li>
+        <li data-n="5">Aplicação de primer asfáltico oxidado (0,3 L/m²)</li>
+        <li data-n="6">Soldagem de manta asfáltica elastomérica SBS 4mm com maçarico</li>
+        <li data-n="7">Reforços duplos em bordas, ralos e pontos críticos</li>
+        <li data-n="8">Prova de estanqueidade por alagamento (mín. 72h)</li>
+        <li data-n="9">Proteção mecânica: argamassa 3 cm com tela, para recebimento de terra vegetal</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- ESQUADRIAS -->
+  <div class="step-card" style="margin-bottom:18px;">
+    <h4>Esquadrias — Impermeabilização de Janelas, Portas e Venezianas <span class="pill pill-blue">329,92 m²</span> <span style="font-size:9px; font-weight:400; color:#888;">ITS008 §6.3 / §6.4 / §6.7</span></h4>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+      <ul class="step-list">
+        <li data-n="1">Limpeza mecânica do requadro, contraverga e alvenaria adjacente — remoção de poeira, materiais soltos e resíduos de argamassa</li>
+        <li data-n="2">Regularização da contraverga com caimento mínimo de 1% para o exterior (ITS008 §6.3)</li>
+        <li data-n="3">Assentamento de telas 10×30 cm em ângulo 45° nos cantos internos do requadro (ITS008 §6.7)</li>
+        <li data-n="4">1ª demão de argamassa polimérica (MAP) com trincha — cobrir 10 cm nas laterais e na base do requadro e pontos críticos (cantos e berços)</li>
+      </ul>
+      <ul class="step-list">
+        <li data-n="5">Após ±1h: 2ª demão de argamassa polimérica em direção cruzada — espessura mínima total: 1 mm (ITS008 §6.3/§6.4)</li>
+        <li data-n="6">Aplicação de selador elastomérico (Grafftex / Procryl / equiv.) na junta perimetral caixilho-alvenaria em toda a fachada (ITS008 §6.7)</li>
+        <li data-n="7">Aguardar cura: mín. 24h (tempo seco) ou 48h (tempo úmido) antes do assentamento de pedra ou revestimento</li>
+        <li data-n="8">Registro fotográfico antes/depois de cada esquadria e proteção da área até cura completa</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="highlight">
+    <strong>Referências de produtos (conforme ITS008 – Rev. 09, 04/04/2025):</strong>
+    Argamassa polimérica: <em>Tecplus Top Quartzolit · Viaplus 1000 · Denver</em> |
+    Membrana acrílica: <em>Viaplus 7000 · Monotop</em> |
+    Elastomérico flexível (esquadrias): <em>Viaflèx Parede · Denvercryl Parede · Vedrapen Parede · Procryl (Friso) · Igorflex Fachada (Sika) · Selador Elastomérico Grafftex</em> |
+    Primer asfáltico: <em>Neutrol · Denvertrol</em> |
+    Manta asfáltica SBS 4mm: <em>Viapol · Manta Shed · Imperveg</em>.
+    Todos os materiais entregues com FISPQ e laudo técnico do fabricante para aprovação da fiscalização.
+  </div>
+
+  <div class="footer">
+    <p>Imper Soluções · Proposta PC-2026-SORANO · Emitida em 28/03/2026 · Página 4/6</p>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════
+     PÁGINA 5 — DESCRITIVO E QUANTITATIVO DE MATERIAIS COM VALORES
+═══════════════════════════════════════════════════════════════════ -->
+<div class="page page-break">
+
+  <div class="header">
+    <div class="logo-area">
+      <h1>IMPER SOLUÇÕES</h1>
+      <p>Proposta PC-2026-SORANO · SORANO</p>
+    </div>
+    <div class="doc-id">
+      <div class="badge">DESCRITIVO DE MATERIAIS</div>
+      <p>Página 5 / 6</p>
+    </div>
+  </div>
+
+  <h2>Descritivo e Quantitativo de Materiais — com Valores</h2>
+  <p style="font-size:10.5px; color:#555; margin-bottom:12px;">
+    Consumos calculados sobre as áreas do levantamento. Preços unitários referência mercado Curitiba–PR, abr/2026.
+    A proteção mecânica (argamassa + tela) é discriminada separadamente para total transparência.
+  </p>
+
+  <!-- ── SISTEMA 2.8.6 ── -->
+  <table class="mat-table" style="margin-bottom:4px;">
+    <thead>
+      <tr>
+        <th colspan="7" style="background:#1a3a5c; font-size:11px; text-align:left;">
+          Sistema 2.8.6 — Argamassa Polimérica + Membrana Acrílica c/ Fibras &nbsp;|&nbsp; Área: 785,24 m²
+          &nbsp;<span style="font-weight:400; font-size:9px; opacity:.8;">(Cisternas, C. Cheias, Reservatório Reuso — Etapas 1 e 4)</span>
+        </th>
+      </tr>
+      <tr>
+        <th>Item</th>
+        <th>Descrição do Material</th>
+        <th>Referência / Marca</th>
+        <th class="num">Consumo unit.</th>
+        <th class="num">Qtd. total</th>
+        <th class="num">Preço unit.</th>
+        <th class="num">Total (R$)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>2.8.6.1</td>
+        <td>Argamassa polimérica bicomponente (Comp. A+B) — balde 20 kg<br><small style="color:#777;">2 demãos cruzadas a trincha; superfície SSS</small></td>
+        <td>Viaplus 1000 / Denver / Tecplus Top Quartzolit</td>
+        <td class="num">4,0 kg/m²</td>
+        <td class="num">158 baldes</td>
+        <td class="num">R$ 98,00</td>
+        <td class="num">R$ 15.484,00</td>
+      </tr>
+      <tr>
+        <td>2.8.6.2</td>
+        <td>Membrana acrílica com cimento e fibras sintéticas — balde 18 kg<br><small style="color:#777;">Aplicada ±3h após 2ª demão da argamassa polimérica</small></td>
+        <td>Viaplus 7000 / Monotop / Vedacit Membrana Acrílica</td>
+        <td class="num">1,5 kg/m²</td>
+        <td class="num">66 baldes</td>
+        <td class="num">R$ 82,00</td>
+        <td class="num">R$ 5.412,00</td>
+      </tr>
+      <tr>
+        <td>2.8.6.3</td>
+        <td>Tela de poliéster malha 2×2mm — m²<br><small style="color:#777;">Ralos 30×30cm (5cm parede tubo + 10cm piso), rodapé mín. 20cm, cantos vivos</small></td>
+        <td>Tela poliéster 150 g/m² — rolo 50m</td>
+        <td class="num">~10% área + detalhes</td>
+        <td class="num">80 m²</td>
+        <td class="num">R$ 9,50</td>
+        <td class="num">R$ 760,00</td>
+      </tr>
+      <tr>
+        <td>2.8.6.4</td>
+        <td>Adesivo PVA / Primer de fundo — galão 3,6 L<br><small style="color:#777;">Aplicação prévia para compatibilização e aderência</small></td>
+        <td>Bianco PVA / primer de base compatível</td>
+        <td class="num">0,15 L/m²</td>
+        <td class="num">33 galões</td>
+        <td class="num">R$ 38,00</td>
+        <td class="num">R$ 1.254,00</td>
+      </tr>
+      <tr class="tr-subtotal">
+        <td colspan="6"><strong>SUBTOTAL MATERIAIS — Sistema 2.8.6</strong></td>
+        <td class="num"><strong>R$ 22.910,00</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── SISTEMA 6.8.1 ── -->
+  <table class="mat-table" style="margin-bottom:4px;">
+    <thead>
+      <tr>
+        <th colspan="7" style="background:#1a3a5c; font-size:11px; text-align:left;">
+          Sistema 6.8.1 — Epóxi Poliamida Bicamada &nbsp;|&nbsp; Área: 117,77 m²
+          <span style="font-weight:400; font-size:9px; opacity:.8;">(Tetos dos reservatórios — Etapas 1 e 4)</span>
+        </th>
+      </tr>
+      <tr>
+        <th>Item</th>
+        <th>Descrição do Material</th>
+        <th>Referência / Marca</th>
+        <th class="num">Consumo unit.</th>
+        <th class="num">Qtd. total</th>
+        <th class="num">Preço unit.</th>
+        <th class="num">Total (R$)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>6.8.1.1</td>
+        <td>Primer epóxi bicomponente — kit 3,6 kg<br><small style="color:#777;">2 demãos cruzadas a rolo; aguardar 4h antes do revestimento</small></td>
+        <td>Sikagard 63 N / Vedapox Primer / equiv.</td>
+        <td class="num">0,2 kg/m²</td>
+        <td class="num">7 kits</td>
+        <td class="num">R$ 195,00</td>
+        <td class="num">R$ 1.365,00</td>
+      </tr>
+      <tr>
+        <td>6.8.1.2</td>
+        <td>Revestimento epóxi poliamida bicomponente — kit 20 kg<br><small style="color:#777;">2 demãos (400 g/m² cada) em direções cruzadas; holiday test após cura</small></td>
+        <td>Sikagard 62 / Ferpox / Vedapox Revestimento / equiv.</td>
+        <td class="num">0,8 kg/m² (2 demãos)</td>
+        <td class="num">5 kits</td>
+        <td class="num">R$ 680,00</td>
+        <td class="num">R$ 3.400,00</td>
+      </tr>
+      <tr class="tr-subtotal">
+        <td colspan="6"><strong>SUBTOTAL MATERIAIS — Sistema 6.8.1</strong></td>
+        <td class="num"><strong>R$ 4.765,00</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── SISTEMA 4.2.4 ── -->
+  <table class="mat-table" style="margin-bottom:4px;">
+    <thead>
+      <tr>
+        <th colspan="7" style="background:#1a3a5c; font-size:11px; text-align:left;">
+          Sistema 4.2.4 — Manta Asfáltica SBS 4mm + Proteção Mecânica &nbsp;|&nbsp; Área: 2.120,19 m²
+          <span style="font-weight:400; font-size:9px; opacity:.8;">(Terraços privativos Gardens + Circulação área externa — Etapas 2 e 3)</span>
+        </th>
+      </tr>
+      <tr>
+        <th>Item</th>
+        <th>Descrição do Material</th>
+        <th>Referência / Marca</th>
+        <th class="num">Consumo unit.</th>
+        <th class="num">Qtd. total</th>
+        <th class="num">Preço unit.</th>
+        <th class="num">Total (R$)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>4.2.4.1</td>
+        <td>Primer asfáltico oxidado — tambor 200 L<br><small style="color:#777;">Aplicação a rolo; aguardar secagem 2–4h antes da manta</small></td>
+        <td>Neutrol / Denvertrol / equiv.</td>
+        <td class="num">0,3 L/m²</td>
+        <td class="num">4 tambores (636 L)</td>
+        <td class="num">R$ 1.950,00</td>
+        <td class="num">R$ 7.800,00</td>
+      </tr>
+      <tr>
+        <td>4.2.4.2</td>
+        <td>Manta asfáltica elastomérica SBS 4mm — rolo 10 m² (1×10m)<br><small style="color:#777;">Soldagem a maçarico; sobreposição mín. 10cm lateral / 15cm transversal; reforços duplos em ralos e cantos</small></td>
+        <td>Viapol / Manta Shed / Imperveg / equiv.</td>
+        <td class="num">1,10 m²/m² (c/ overlap)</td>
+        <td class="num">234 rolos (2.332 m²)</td>
+        <td class="num">R$ 195,00</td>
+        <td class="num">R$ 45.630,00</td>
+      </tr>
+      <tr>
+        <td>4.2.4.3</td>
+        <td>Cimento CP II-E — saco 50 kg<br><small style="color:#777;">Proteção mecânica 3cm espessura, traço 1:3 (cimento:areia)</small></td>
+        <td>Votorantim / Itambé / Cauê</td>
+        <td class="num">14 kg/m²</td>
+        <td class="num">594 sacos</td>
+        <td class="num">R$ 42,00</td>
+        <td class="num">R$ 24.948,00</td>
+      </tr>
+      <tr>
+        <td>4.2.4.4</td>
+        <td>Areia média lavada — m³<br><small style="color:#777;">Proteção mecânica 3cm, traço 1:3</small></td>
+        <td>Areia lavada média grão</td>
+        <td class="num">0,042 m³/m²</td>
+        <td class="num">89 m³</td>
+        <td class="num">R$ 125,00</td>
+        <td class="num">R$ 11.125,00</td>
+      </tr>
+      <tr>
+        <td>4.2.4.5</td>
+        <td>Tela de aço galvanizado soldada — m²<br><small style="color:#777;">Armadura da proteção mecânica, embutida no contrapiso 3cm</small></td>
+        <td>Tela soldada Q-92 / Q-138 galvanizada</td>
+        <td class="num">1,05 m²/m²</td>
+        <td class="num">2.226 m²</td>
+        <td class="num">R$ 14,50</td>
+        <td class="num">R$ 32.277,00</td>
+      </tr>
+      <tr class="tr-subtotal">
+        <td colspan="6"><strong>SUBTOTAL MATERIAIS — Sistema 4.2.4</strong></td>
+        <td class="num"><strong>R$ 121.780,00</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── SISTEMA 4.5.3 ── -->
+  <table class="mat-table" style="margin-bottom:4px;">
+    <thead>
+      <tr>
+        <th colspan="7" style="background:#1a3a5c; font-size:11px; text-align:left;">
+          Sistema 4.5.3 — Manta Asfáltica SBS 4mm + Emulsão Antiraiz + Proteção Mecânica &nbsp;|&nbsp; Área: 1.201,70 m²
+          <span style="font-weight:400; font-size:9px; opacity:.8;">(Floreiras + Bancos área externa 4º Pvto — Etapa 3)</span>
+        </th>
+      </tr>
+      <tr>
+        <th>Item</th>
+        <th>Descrição do Material</th>
+        <th>Referência / Marca</th>
+        <th class="num">Consumo unit.</th>
+        <th class="num">Qtd. total</th>
+        <th class="num">Preço unit.</th>
+        <th class="num">Total (R$)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>4.5.3.1</td>
+        <td>Emulsão asfáltica antiraiz — bombona 18 L<br><small style="color:#777;">Aplicação a rolo ou trincha antes do primer; aguardar secagem 3–4h</small></td>
+        <td>Viaflex Antiraiz / Sika 346 / equiv.</td>
+        <td class="num">0,5 L/m²</td>
+        <td class="num">34 bombonas (601 L)</td>
+        <td class="num">R$ 290,00</td>
+        <td class="num">R$ 9.860,00</td>
+      </tr>
+      <tr>
+        <td>4.5.3.2</td>
+        <td>Primer asfáltico oxidado — tambor 200 L<br><small style="color:#777;">Aplicação após secagem da emulsão antiraiz; aguardar 2–4h</small></td>
+        <td>Neutrol / Denvertrol / equiv.</td>
+        <td class="num">0,3 L/m²</td>
+        <td class="num">2 tambores (361 L)</td>
+        <td class="num">R$ 1.950,00</td>
+        <td class="num">R$ 3.900,00</td>
+      </tr>
+      <tr>
+        <td>4.5.3.3</td>
+        <td>Manta asfáltica elastomérica SBS 4mm — rolo 10 m²<br><small style="color:#777;">Soldagem a maçarico; reforços duplos em bordas, ralos e pontos críticos</small></td>
+        <td>Viapol / Manta Shed / Imperveg / equiv.</td>
+        <td class="num">1,10 m²/m² (c/ overlap)</td>
+        <td class="num">133 rolos (1.322 m²)</td>
+        <td class="num">R$ 195,00</td>
+        <td class="num">R$ 25.935,00</td>
+      </tr>
+      <tr>
+        <td>4.5.3.4</td>
+        <td>Cimento CP II-E — saco 50 kg<br><small style="color:#777;">Proteção mecânica 3cm para recebimento de terra vegetal</small></td>
+        <td>Votorantim / Itambé / Cauê</td>
+        <td class="num">14 kg/m²</td>
+        <td class="num">337 sacos</td>
+        <td class="num">R$ 42,00</td>
+        <td class="num">R$ 14.154,00</td>
+      </tr>
+      <tr>
+        <td>4.5.3.5</td>
+        <td>Areia média lavada — m³</td>
+        <td>Areia lavada média grão</td>
+        <td class="num">0,042 m³/m²</td>
+        <td class="num">51 m³</td>
+        <td class="num">R$ 125,00</td>
+        <td class="num">R$ 6.375,00</td>
+      </tr>
+      <tr>
+        <td>4.5.3.6</td>
+        <td>Tela de aço galvanizado soldada — m²<br><small style="color:#777;">Armadura da proteção mecânica embutida no contrapiso</small></td>
+        <td>Tela soldada Q-92 / Q-138 galvanizada</td>
+        <td class="num">1,05 m²/m²</td>
+        <td class="num">1.262 m²</td>
+        <td class="num">R$ 14,50</td>
+        <td class="num">R$ 18.299,00</td>
+      </tr>
+      <tr class="tr-subtotal">
+        <td colspan="6"><strong>SUBTOTAL MATERIAIS — Sistema 4.5.3</strong></td>
+        <td class="num"><strong>R$ 78.523,00</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── ESQUADRIAS ── -->
+  <table class="mat-table" style="margin-bottom:4px;">
+    <thead>
+      <tr>
+        <th colspan="7" style="background:#4a7aac; font-size:11px; text-align:left;">
+          Esquadrias — MAP + Selador Elastomérico (ITS008 §6.3/§6.4/§6.7) &nbsp;|&nbsp; Área: 329,92 m²
+          <span style="font-weight:400; font-size:9px; opacity:.9;">(Janelas, Portas e Venezianas — Embasamento + Torres 1 e 2)</span>
+        </th>
+      </tr>
+      <tr>
+        <th>Item</th>
+        <th>Descrição do Material</th>
+        <th>Referência / Marca</th>
+        <th class="num">Consumo unit.</th>
+        <th class="num">Qtd. total</th>
+        <th class="num">Preço unit.</th>
+        <th class="num">Total (R$)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>ESQ.1</td>
+        <td>Argamassa polimérica bicomponente — balde 20 kg<br><small style="color:#777;">2 demãos cruzadas a trincha; esp. mín. 1mm; requadro, contraverga e berço</small></td>
+        <td>Viaplus 1000 / Denver / Tecplus Top Quartzolit</td>
+        <td class="num">1,0 kg/m²</td>
+        <td class="num">17 baldes (330 kg)</td>
+        <td class="num">R$ 98,00</td>
+        <td class="num">R$ 1.666,00</td>
+      </tr>
+      <tr>
+        <td>ESQ.2</td>
+        <td>Tela de poliéster malha 2×2mm — peças cortadas 10×30cm<br><small style="color:#777;">Assentadas a 45° nos cantos internos do requadro (ITS008 §6.7)</small></td>
+        <td>Tela poliéster 150 g/m²</td>
+        <td class="num">~2 pcs/esquadria</td>
+        <td class="num">500 peças (~15 m²)</td>
+        <td class="num">R$ 0,90</td>
+        <td class="num">R$ 450,00</td>
+      </tr>
+      <tr>
+        <td>ESQ.3</td>
+        <td>Selador elastomérico flexível — cartucho 280 ml<br><small style="color:#777;">Junta perimetral caixilho-alvenaria em toda a fachada; cura 24–48h</small></td>
+        <td>Grafftex Selador Elast. / Procryl (Friso) / Igorflex Fachada (Sika)</td>
+        <td class="num">~0,3 L/m linear</td>
+        <td class="num">120 cartuchos</td>
+        <td class="num">R$ 42,00</td>
+        <td class="num">R$ 5.040,00</td>
+      </tr>
+      <tr class="tr-subtotal">
+        <td colspan="6"><strong>SUBTOTAL MATERIAIS — Esquadrias</strong></td>
+        <td class="num"><strong>R$ 7.156,00</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- TOTAL GERAL MATERIAIS -->
+  <table class="mat-table" style="margin-bottom:14px;">
+    <tbody>
+      <tr style="background:#e8f0f8;">
+        <td style="padding:6px 8px; font-weight:700; color:#1a3a5c;">Sistema 2.8.6 — Argamassa Polimérica + Membrana Acrílica</td>
+        <td class="num" style="padding:6px 8px; font-weight:700; color:#1a3a5c;">R$ 22.910,00</td>
+      </tr>
+      <tr style="background:#e8f0f8;">
+        <td style="padding:6px 8px; font-weight:700; color:#1a3a5c;">Sistema 6.8.1 — Epóxi Poliamida</td>
+        <td class="num" style="padding:6px 8px; font-weight:700; color:#1a3a5c;">R$ 4.765,00</td>
+      </tr>
+      <tr style="background:#e8f0f8;">
+        <td style="padding:6px 8px; font-weight:700; color:#1a3a5c;">Sistema 4.2.4 — Manta + Proteção Mecânica</td>
+        <td class="num" style="padding:6px 8px; font-weight:700; color:#1a3a5c;">R$ 121.780,00</td>
+      </tr>
+      <tr style="background:#e8f0f8;">
+        <td style="padding:6px 8px; font-weight:700; color:#1a3a5c;">Sistema 4.5.3 — Manta + Antiraiz + Proteção Mecânica</td>
+        <td class="num" style="padding:6px 8px; font-weight:700; color:#1a3a5c;">R$ 78.523,00</td>
+      </tr>
+      <tr style="background:#e8f0f8;">
+        <td style="padding:6px 8px; font-weight:700; color:#1a3a5c;">Esquadrias — MAP + Selador Elastomérico</td>
+        <td class="num" style="padding:6px 8px; font-weight:700; color:#1a3a5c;">R$ 7.156,00</td>
+      </tr>
+      <tr class="tr-total">
+        <td><strong>TOTAL GERAL DE MATERIAIS</strong><br><small style="font-weight:400; opacity:.8;">Representa 43% do valor total da proposta (excl. BDI, M.O. e mobilização)</small></td>
+        <td class="num"><strong>R$ 235.134,00</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin:4px 0 14px;">
+    <div class="info-box">
+      <div class="label">Total de Materiais</div>
+      <div class="value">R$ 235.134,00</div>
+      <div class="sub">43,4% do valor total</div>
+    </div>
+    <div class="info-box">
+      <div class="label">Total de Mão de Obra</div>
+      <div class="value">R$ 191.539,28</div>
+      <div class="sub">35,4% do valor total</div>
+    </div>
+    <div class="info-box">
+      <div class="label">BDI 25% + Mobilização</div>
+      <div class="value">R$ 114.706,27</div>
+      <div class="sub">21,2% do valor total</div>
+    </div>
+  </div>
+
+  <div class="highlight">
+    <strong>Como ler este descritivo:</strong> Os valores de materiais acima são os custos diretos de aquisição dos insumos.
+    O preço final por m² na proposta inclui, além do material, a mão de obra especializada, equipamentos (maçarico, rolo, trincha, EPI), consumíveis (fita, estopa, limpador) e o BDI de 25% que cobre impostos, administração central e margem de lucro.
+  </div>
+
+  <div class="footer">
+    <p>Imper Soluções · Proposta PC-2026-SORANO · Emitida em 28/03/2026 · Página 5/6</p>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════
+     PÁGINA 5 — CONDIÇÕES COMERCIAIS + ASSINATURA
+═══════════════════════════════════════════════════════════════════ -->
+<div class="page page-break">
+
+  <div class="header">
+    <div class="logo-area">
+      <h1>IMPER SOLUÇÕES</h1>
+      <p>Proposta PC-2026-SORANO · SORANO</p>
+    </div>
+    <div class="doc-id">
+      <div class="badge">CONDIÇÕES E ASSINATURA</div>
+      <p>Página 6 / 6</p>
+    </div>
+  </div>
+
+  <h2>Condições Comerciais</h2>
+
+  <div class="cond-grid">
+
+    <div class="cond-item">
+      <div class="icon">💰</div>
+      <div>
+        <strong>Forma de Pagamento</strong>
+        <span>
+          10% na assinatura do contrato (mobilização)<br>
+          30% no início de cada etapa<br>
+          60% na conclusão e aprovação de cada etapa<br>
+          Pagamento via boleto ou transferência bancária
+        </span>
+      </div>
+    </div>
+
+    <div class="cond-item">
+      <div class="icon">📅</div>
+      <div>
+        <strong>Prazos e Validade</strong>
+        <span>
+          Proposta válida por <strong>30 dias</strong> a partir de 28/03/2026<br>
+          Após vencimento, sujeita a reajuste pelo INCC<br>
+          Prazo de execução conforme cronograma aprovado<br>
+          Início condicionado à assinatura do contrato
+        </span>
+      </div>
+    </div>
+
+    <div class="cond-item">
+      <div class="icon">🛡️</div>
+      <div>
+        <strong>Garantia</strong>
+        <span>
+          <strong>5 anos</strong> para sistemas de manta asfáltica (4.2.4 e 4.5.3)<br>
+          <strong>3 anos</strong> para argamassa polimérica (Sistema 2.8.6)<br>
+          <strong>2 anos</strong> para epóxi poliamida (Sistema 6.8.1)<br>
+          <strong>2 anos</strong> para impermeabilização de esquadrias<br>
+          Garantia condicionada à aprovação da prova de estanqueidade e à correta execução da proteção mecânica pelo contratante
+        </span>
+      </div>
+    </div>
+
+    <div class="cond-item">
+      <div class="icon">🔧</div>
+      <div>
+        <strong>Responsabilidades do Contratante</strong>
+        <span>
+          Fornecimento de andaimes, balancins e plataformas<br>
+          Energia elétrica e água disponíveis no canteiro<br>
+          Acesso às áreas de trabalho desobstruído<br>
+          Proteção das áreas já executadas contra danos por terceiros<br>
+          Local para armazenamento de materiais (área coberta)
+        </span>
+      </div>
+    </div>
+
+    <div class="cond-item">
+      <div class="icon">📋</div>
+      <div>
+        <strong>Documentação Fornecida</strong>
+        <span>
+          Fichas de segurança (FISPQ) de todos os produtos<br>
+          Laudos técnicos dos materiais utilizados<br>
+          Relatório fotográfico por etapa<br>
+          Termo de conclusão e prova de estanqueidade<br>
+          Certificado de garantia assinado pelo RT
+        </span>
+      </div>
+    </div>
+
+    <div class="cond-item">
+      <div class="icon">⚠️</div>
+      <div>
+        <strong>Exclusões do Escopo</strong>
+        <span>
+          Demolição e regularização de substrato (exceto pequenos reparos pontuais)<br>
+          Instalação hidráulica e drenos<br>
+          Estrutura de andaimes e aluguel de equipamentos especiais<br>
+          Pintura de acabamento sobre impermeabilização<br>
+          Retrabalhos causados por interferência de outras equipes
+        </span>
+      </div>
+    </div>
+
+    <div class="cond-item">
+      <div class="icon">🌧️</div>
+      <div>
+        <strong>Condições Climáticas</strong>
+        <span>
+          Serviços não executados com chuva ou umidade excessiva<br>
+          Temperatura mínima de 5°C para aplicação de argamassas<br>
+          Manta asfáltica: temperatura mínima de 8°C para soldagem<br>
+          Dias parados por chuva não contam no prazo contratual
+        </span>
+      </div>
+    </div>
+
+    <div class="cond-item">
+      <div class="icon">📐</div>
+      <div>
+        <strong>Reajuste de Quantitativos</strong>
+        <span>
+          Áreas baseadas no levantamento da planilha fornecida pelo contratante<br>
+          Medição por área efetivamente executada<br>
+          Variação de até ±10% absorvida sem aditivo<br>
+          Acima de 10%: aditivo contratual com os mesmos preços unitários<br>
+          Serviços adicionais mediante nova proposta específica
+        </span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RESUMO FINANCEIRO FINAL -->
+  <h2 style="margin-top:20px;">Resumo Financeiro</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Etapa</th>
+        <th>Descrição</th>
+        <th class="num">Área (m²)</th>
+        <th class="num">Valor (R$)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="bold">1ª Etapa</td>
+        <td>Reservatórios Térreo e 3º Pvto — Embasamento</td>
+        <td class="num">542,61</td>
+        <td class="num">59.475,45</td>
+      </tr>
+      <tr>
+        <td class="bold">2ª Etapa</td>
+        <td>4º Pvto — Terraços Privativos (Gardens)</td>
+        <td class="num">288,99</td>
+        <td class="num">34.100,82</td>
+      </tr>
+      <tr>
+        <td class="bold">3ª Etapa</td>
+        <td>4º Pvto — Área Externa (Floreiras, Bancos, Circulação)</td>
+        <td class="num">3.032,90</td>
+        <td class="num">374.706,00</td>
+      </tr>
+      <tr>
+        <td class="bold">4ª Etapa</td>
+        <td>Cobertura — Reservatórios Bloco 01 e Bloco 02</td>
+        <td class="num">361,40</td>
+        <td class="num">39.363,52</td>
+      </tr>
+      <tr>
+        <td class="bold">Compl.</td>
+        <td>Impermeabilização de Esquadrias — Todos os pavimentos</td>
+        <td class="num">329,92</td>
+        <td class="num">25.733,76</td>
+      </tr>
+      <tr>
+        <td class="bold">—</td>
+        <td>Mobilização e Desmobilização de Equipe</td>
+        <td class="num">—</td>
+        <td class="num">8.000,00</td>
+      </tr>
+      <tr class="tr-total">
+        <td colspan="2"><strong>VALOR TOTAL DA PROPOSTA</strong></td>
+        <td class="num"><strong>4.555,82 m²</strong></td>
+        <td class="num"><strong>R$ 541.379,55</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="background:#fff8e7; border:1px solid #e87722; border-radius:8px; padding:12px 16px; margin:16px 0; font-size:11px; color:#555;">
+    <strong style="color:#1a3a5c; display:block; margin-bottom:4px;">⚠️ Observação Importante sobre a 3ª Etapa:</strong>
+    A 3ª etapa representa 69% do valor total da proposta, em razão da grande extensão da área externa do 4º pavimento (3.032,90 m²) que inclui floreiras, bancos e circulação. Recomendamos análise do cronograma de liberação dessas áreas para otimização da mobilização da equipe.
+  </div>
+
+  <!-- ASSINATURA -->
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-top:30px;">
+    <div class="sign-area">
+      <div class="sign-line"></div>
+      <p style="font-weight:700; color:#1a3a5c; font-size:12px;">IMPER SOLUÇÕES</p>
+      <p style="font-size:10px; color:#777;">Contratada · Responsável Técnico</p>
+      <p style="font-size:10px; color:#777; margin-top:4px;">Data: ______ / ______ / 2026</p>
+    </div>
+    <div class="sign-area">
+      <div class="sign-line"></div>
+      <p style="font-weight:700; color:#1a3a5c; font-size:12px;">CONTRATANTE</p>
+      <p style="font-size:10px; color:#777;">Representante Legal · SORANO</p>
+      <p style="font-size:10px; color:#777; margin-top:4px;">Data: ______ / ______ / 2026</p>
+    </div>
+  </div>
+
+  <div class="footer" style="margin-top:20px;">
+    <div>
+      <p>Imper Soluções · Proposta PC-2026-SORANO · Emitida em 28/03/2026</p>
+      <p>Este documento é de uso exclusivo do destinatário. Não divulgar sem autorização.</p>
+    </div>
+    <div style="text-align:right;">
+      <p>Página 6 / 6 — Documento completo</p>
+      <p>Curitiba – PR, 28 de março de 2026</p>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
