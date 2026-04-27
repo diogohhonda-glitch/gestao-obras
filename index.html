@@ -913,16 +913,16 @@ async function loadAllData() {
   if (useCloud) {
     try {
       const data = await cloudLoad();
-      state.clientes     = dedup(data.clientes     || []);
-      state.orcamentos   = dedup(data.orcamentos   || []);
-      state.prestadores  = dedup(data.prestadores  || []);
-      state.obras        = dedup(data.obras        || []);
+      state.clientes     = dedup(data.clientes     || [], i => i.nome?.trim().toLowerCase());
+      state.orcamentos   = dedup(data.orcamentos   || [], i => i.descricao?.trim().toLowerCase() + '|' + i.valor);
+      state.prestadores  = dedup(data.prestadores  || [], i => i.nome?.trim().toLowerCase());
+      state.obras        = dedup(data.obras        || [], i => i.nome?.trim().toLowerCase());
       state.custos       = dedup(data.custos       || []);
-      state.funcionarios = dedup(data.funcionarios || []);
+      state.funcionarios = dedup(data.funcionarios || [], i => i.nome?.trim().toLowerCase());
       state.diarioObra   = dedup(data.diarioObra   || []);
       state.notasFiscais = dedup(data.notasFiscais || []);
       state.contas       = dedup(data.contas       || []);
-      state.estoque      = dedup(data.estoque      || []);
+      state.estoque      = dedup(data.estoque      || [], i => i.material?.trim().toLowerCase());
       // Salva de volta sem duplicatas
       await cloudSave();
     } catch(e) {
