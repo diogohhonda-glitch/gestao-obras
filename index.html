@@ -887,13 +887,23 @@ function saveLsAll() {
 }
 
 // ===================== DEDUP =====================
-function dedup(arr) {
+function dedup(arr, extraKey) {
   if (!Array.isArray(arr)) return [];
-  const seen = new Set();
+  const seenIds = new Set();
+  const seenKeys = new Set();
   return arr.filter(item => {
-    if (!item || !item.id) return true;
-    if (seen.has(item.id)) return false;
-    seen.add(item.id);
+    if (!item) return false;
+    // Dedup por ID
+    if (item.id) {
+      if (seenIds.has(item.id)) return false;
+      seenIds.add(item.id);
+    }
+    // Dedup por chave extra (ex: nome+valor)
+    if (extraKey) {
+      const k = extraKey(item);
+      if (k && seenKeys.has(k)) return false;
+      if (k) seenKeys.add(k);
+    }
     return true;
   });
 }
