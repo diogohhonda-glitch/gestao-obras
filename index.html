@@ -1948,11 +1948,14 @@ function addOrcMatRow(data) {
   const sub = ((parseFloat(d.quantidade) || 0) * (parseFloat(d.valorUnitario) || 0)).toFixed(2);
   const tr = document.createElement('tr');
   tr.id = 'orc-mat-row-' + id;
+  const matListId = 'mat-list-' + id;
+  const matOpts = state.estoque.map(e => `<option value="${e.material}" data-unidade="${e.unidade||''}" data-valor="${e.valorUnitario||0}">`).join('');
   tr.innerHTML = `
-    <td><input type="text" value="${d.material || ''}" placeholder="Material..." style="width:100%;padding:5px 8px;font-size:13px;" oninput="calcOrcTotals()"></td>
-    <td><input type="number" value="${d.quantidade || ''}" placeholder="0" min="0" step="0.01" style="width:100%;padding:5px 8px;font-size:13px;" oninput="calcOrcTotals()"></td>
-    <td><input type="text" value="${d.unidade || ''}" placeholder="m²" style="width:100%;padding:5px 8px;font-size:13px;"></td>
-    <td><input type="number" value="${d.valorUnitario || ''}" placeholder="0,00" min="0" step="0.01" style="width:100%;padding:5px 8px;font-size:13px;" oninput="calcOrcTotals()"></td>
+    <datalist id="${matListId}">${matOpts}</datalist>
+    <td><input type="text" list="${matListId}" value="${d.material || ''}" placeholder="Digite ou selecione..." style="width:100%;padding:5px 8px;font-size:13px;" oninput="preencherMatOrc(this,'${id}')" onchange="preencherMatOrc(this,'${id}')"></td>
+    <td><input type="number" id="orc-mat-qtd-${id}" value="${d.quantidade || ''}" placeholder="0" min="0" step="0.01" style="width:100%;padding:5px 8px;font-size:13px;" oninput="calcOrcTotals()"></td>
+    <td><input type="text" id="orc-mat-und-${id}" value="${d.unidade || ''}" placeholder="m²" style="width:100%;padding:5px 8px;font-size:13px;"></td>
+    <td><input type="number" id="orc-mat-val-${id}" value="${d.valorUnitario || ''}" placeholder="0,00" min="0" step="0.01" style="width:100%;padding:5px 8px;font-size:13px;" oninput="calcOrcTotals()"></td>
     <td id="orc-mat-sub-${id}" style="font-weight:700;font-size:13px;text-align:right;white-space:nowrap;">${fmtCurrency(parseFloat(sub))}</td>
     <td><button type="button" onclick="removeOrcRow(this)" style="background:#fee2e2;color:#991b1b;border:none;border-radius:6px;cursor:pointer;padding:4px 8px;font-size:14px;">✕</button></td>`;
   tbody.appendChild(tr);
