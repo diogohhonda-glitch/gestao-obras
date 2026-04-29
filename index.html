@@ -1353,7 +1353,7 @@ function renderDashboard() {
 
   // ---- Alertas ----
   const alertSection = document.getElementById('stat-cards').parentElement;
-  ['garantia-alerts','estoque-alert-dash','followup-alert-dash'].forEach(id => {
+  ['garantia-alerts','followup-alert-dash'].forEach(id => {
     if (!document.getElementById(id)) {
       const div = document.createElement('div'); div.id = id;
       alertSection.insertBefore(div, alertSection.children[1]);
