@@ -2013,6 +2013,18 @@ function removeOrcRow(btn) {
   calcOrcTotals();
 }
 
+function preencherMatOrc(input, id) {
+  const nome = input.value.trim();
+  const item = state.estoque.find(e => e.material.trim().toLowerCase() === nome.toLowerCase());
+  if (item) {
+    const undEl = document.getElementById('orc-mat-und-' + id);
+    const valEl = document.getElementById('orc-mat-val-' + id);
+    if (undEl && !undEl.value) undEl.value = item.unidade || '';
+    if (valEl && !valEl.value) valEl.value = item.valorUnitario || '';
+  }
+  calcOrcTotals();
+}
+
 function calcOrcTotals() {
   let totalMat = 0;
   const matTbody = document.getElementById('orc-mat-tbody');
