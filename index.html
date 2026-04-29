@@ -842,12 +842,19 @@ async function cloudLoad() {
 async function cloudSave() {
   if (!useCloud || !JSONBIN_BIN_ID) return;
   try {
-    await fetch(`${JSONBIN_BASE}/b/${JSONBIN_BIN_ID}`, {
+    const resp = await fetch(`${JSONBIN_BASE}/b/${JSONBIN_BIN_ID}`, {
       method: 'PUT',
       headers: jbHeaders(),
       body: JSON.stringify({ clientes: state.clientes, orcamentos: state.orcamentos, prestadores: state.prestadores, obras: state.obras, custos: state.custos, funcionarios: state.funcionarios, diarioObra: state.diarioObra, notasFiscais: state.notasFiscais, contas: state.contas, estoque: state.estoque })
     });
-  } catch(e) { console.error('Erro ao salvar na nuvem:', e); }
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({}));
+      showToast('⚠️ Erro ao salvar na nuvem: ' + (err.message || resp.status), true);
+    }
+  } catch(e) {
+    console.error('Erro ao salvar na nuvem:', e);
+    showToast('⚠️ Sem conexão com a nuvem. Dado salvo localmente.', true);
+  }
 }
 
 // Alias used in save/delete operations
