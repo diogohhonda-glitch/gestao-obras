@@ -53,9 +53,9 @@ const db = {
   }
   if (db.read('templates').length === 0) {
     [
-      { name: 'Aniversário Especial',    value: 50,  desc: 'Uma surpresa para este dia especial',     color: 'linear-gradient(135deg,#7C3AED,#EC4899)' },
-      { name: 'Presente de Natal',       value: 100, desc: 'Com muito carinho neste Natal',           color: 'linear-gradient(135deg,#DC2626,#166534)' },
-      { name: 'Parabéns pela conquista', value: 150, desc: 'Você merece! Comemore muito!',            color: 'linear-gradient(135deg,#D97706,#92400E)' },
+      { name: 'Aniversário',        value: 50,  desc: 'O presente ideal para celebrar este dia',  color: 'grad-midnight', openValue: false },
+      { name: 'Formatura',          value: 150, desc: 'Parabéns pela conquista. Você merece.',    color: 'grad-gold',     openValue: false },
+      { name: 'Valor Personalizado',value: null,desc: 'Escolha o valor que desejar presentear',  color: 'grad-slate',    openValue: true, minValue: 20, maxValue: 1000 },
     ].forEach(t => db.insert('templates', { id: uuidv4(), ...t, img: null, active: true, createdAt: new Date().toISOString() }));
   }
 })();
@@ -207,10 +207,19 @@ app.put('/api/auth/profile', auth, async (req, res) => {
 app.get('/api/templates', (_, res) => res.json(db.filter('templates', t => t.active)));
 
 app.post('/api/templates', auth, adminOnly, upload.single('img'), (req, res) => {
-  const { name, value, desc, color } = req.body;
-  if (!name || !value || !desc) return res.status(400).json({ error: 'Campos obrigatórios: nome, valor, descrição' });
+  const { name, value, desc, color, openValue, minValue, maxValue } = req.body;
+  if (!name || !desc) return res.status(400).json({ error: 'Nome e descrição são obrigatórios' });
+  const isOpen = openValue === 'true';
+  if (!isOpen && !value) return res.status(400).json({ error: 'Informe o valor do cartão' });
   const img = req.file ? `/uploads/${req.file.filename}` : null;
-  res.json(db.insert('templates', { id: uuidv4(), name: name.trim(), value: parseFloat(value), desc: desc.trim(), color: color || 'linear-gradient(135deg,#7C3AED,#EC4899)', img, active: true, createdAt: new Date().toISOString() }));
+  res.json(db.insert('templates', {
+    id: uuidv4(), name: name.trim(), desc: desc.trim(),
+    value: isOpen ? null : parseFloat(value),
+    openValue: isOpen,
+    minValue: minValue ? parseFloat(minValue) : null,
+    maxValue: maxValue ? parseFloat(maxValue) : null,
+    color: color || 'grad-midnight', img, active: true, createdAt: new Date().toISOString()
+  }));
 });
 
 app.delete('/api/templates/:id', auth, adminOnly, (req, res) => {
@@ -220,23 +229,34 @@ app.delete('/api/templates/:id', auth, adminOnly, (req, res) => {
 
 // Pedidos
 app.post('/api/orders', auth, async (req, res) => {
-  const { templateId, benefName, benefEmail, message } = req.body;
+  const { templateId, benefName, benefEmail, message, customValue } = req.body;
   if (!templateId || !benefName?.trim()) return res.status(400).json({ error: 'Template e nome do beneficiário são obrigatórios' });
 
   const tmpl = db.find('templates', t => t.id === templateId && t.active);
   if (!tmpl) return res.status(404).json({ error: 'Template não encontrado' });
 
+  // Determina o valor final
+  let finalValue;
+  if (tmpl.openValue) {
+    finalValue = parseFloat(customValue);
+    if (!finalValue || finalValue < 1) return res.status(400).json({ error: 'Informe um valor válido' });
+    if (tmpl.minValue && finalValue < tmpl.minValue) return res.status(400).json({ error: `Valor mínimo: R$ ${tmpl.minValue}` });
+    if (tmpl.maxValue && finalValue > tmpl.maxValue) return res.status(400).json({ error: `Valor máximo: R$ ${tmpl.maxValue}` });
+  } else {
+    finalValue = tmpl.value;
+  }
+
   const code     = 'VG' + Math.random().toString(36).slice(2, 9).toUpperCase();
   const cardLink = `${BASE_URL}/card/${code}`;
-  const cardQR   = await QRCode.toDataURL(cardLink, { width: 256, errorCorrectionLevel: 'H', color: { dark: '#1E1B4B', light: '#ffffff' } });
+  const cardQR   = await QRCode.toDataURL(cardLink, { width: 256, errorCorrectionLevel: 'H', color: { dark: '#0D0D0D', light: '#ffffff' } });
 
   // Tenta Asaas; cai em demo se não configurado
   let payment = null;
   if (process.env.ASAAS_KEY) {
-    payment = await createPixPayment(req.user, tmpl.value, `Gift Card Vella — ${tmpl.name}`, code);
+    payment = await createPixPayment(req.user, finalValue, `Gift Card Vella — ${tmpl.name}`, code);
   }
   if (!payment) {
-    payment = await buildManualPixQR(tmpl.value, code);
+    payment = await buildManualPixQR(finalValue, code);
     payment.paymentId = null;
   }
 
@@ -245,7 +265,7 @@ app.post('/api/orders', auth, async (req, res) => {
     buyerId: req.user.id, buyerName: req.user.name, buyerEmail: req.user.email,
     benefName: benefName.trim(), benefEmail: benefEmail?.trim() || null,
     message: message?.trim() || '',
-    value: tmpl.value, templateName: tmpl.name, color: tmpl.color, img: tmpl.img,
+    value: finalValue, templateName: tmpl.name, color: tmpl.color, img: tmpl.img,
     paymentId: payment.paymentId, status: 'pending',
     cardLink, createdAt: new Date().toISOString()
   });
