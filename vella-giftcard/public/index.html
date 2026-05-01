@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vella Gift — Gift Cards Personalizados</title>
+<style>
+:root{--p:#7C3AED;--pk:#EC4899;--pl:#EDE9FE;--dark:#1E1B4B;--g:#6B7280;--bg:#F5F4FB;--w:#fff;--gr:#10B981;--rd:#EF4444;--yl:#F59E0B;--border:#E5E7EB}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--dark);min-height:100vh}
+a{text-decoration:none;color:inherit}
+
+/* ── UTILS ── */
+.hidden{display:none!important}
+.flex{display:flex}.gap4{gap:4px}.gap8{gap:8px}.gap12{gap:12px}.gap16{gap:16px}.gap20{gap:20px}
+.col{flex-direction:column}.ac{align-items:center}.jb{justify-content:space-between}.jc{justify-content:center}
+.w100{width:100%}.mt4{margin-top:4px}.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mt20{margin-top:20px}.mt24{margin-top:24px}
+.mb4{margin-bottom:4px}.mb8{margin-bottom:8px}.mb12{margin-bottom:12px}.mb16{margin-bottom:16px}.mb20{margin-bottom:20px}
+.bold{font-weight:700}.semi{font-weight:600}.sm{font-size:13px}.xs{font-size:12px}.lg{font-size:18px}.xl{font-size:22px}
+.muted{color:var(--g)}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.text-center{text-align:center}
+
+/* ── AUTH ── */
+#auth-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--p) 0%,var(--pk) 100%);padding:20px}
+.auth-box{background:var(--w);border-radius:24px;padding:40px 36px;width:100%;max-width:420px;box-shadow:0 32px 80px rgba(0,0,0,.22)}
+.auth-logo{text-align:center;margin-bottom:32px}
+.auth-logo h1{font-size:28px;font-weight:900;background:linear-gradient(135deg,var(--p),var(--pk));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.auth-logo p{font-size:13px;color:var(--g);margin-top:4px}
+.tabs{display:flex;background:#F3F4F6;border-radius:12px;padding:4px;margin-bottom:24px}
+.tab{flex:1;padding:9px;border:none;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;background:transparent;color:var(--g);transition:all .2s}
+.tab.on{background:var(--w);color:var(--p);box-shadow:0 2px 8px rgba(0,0,0,.09)}
+
+/* ── FORM ── */
+.fg{margin-bottom:16px}
+.fg label{display:block;font-size:12px;font-weight:700;color:var(--dark);margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px}
+.fg input,.fg select,.fg textarea{width:100%;padding:12px 14px;border:2px solid var(--border);border-radius:10px;font-size:14px;outline:none;transition:border .2s;background:var(--w);font-family:inherit}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--p)}
+.fg textarea{resize:vertical;min-height:80px}
+.err{color:var(--rd);font-size:13px;background:#FEF2F2;border-radius:8px;padding:10px 14px;margin-top:10px}
+
+/* ── BUTTONS ── */
+.btn{padding:12px 20px;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-primary{background:linear-gradient(135deg,var(--p),var(--pk));color:var(--w)}
+.btn-primary:hover:not(:disabled){opacity:.9;transform:translateY(-1px)}
+.btn-ghost{background:var(--pl);color:var(--p)}
+.btn-ghost:hover{background:#DDD6FE}
+.btn-danger{background:#FEE2E2;color:var(--rd)}
+.btn-success{background:#D1FAE5;color:var(--gr)}
+.btn-dark{background:var(--dark);color:var(--w)}
+.btn-white{background:var(--w);color:var(--dark);border:1px solid var(--border)}
+.btn-w100{width:100%}
+.btn-sm{padding:7px 14px;font-size:13px;border-radius:8px}
+.btn-google{background:#4285F4;color:#fff}
+.btn-apple{background:#000;color:#fff}
+.btn-pix{background:#32BCAD;color:#fff}
+
+/* ── TOPBAR ── */
+#topbar{background:var(--w);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.topbar-logo{font-size:18px;font-weight:900;background:linear-gradient(135deg,var(--p),var(--pk));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.3px}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.badge{padding:3px 10px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.3px}
+.badge-admin{background:var(--pl);color:var(--p)}
+.badge-client{background:#FCE7F3;color:var(--pk)}
+.badge-active{background:#D1FAE5;color:var(--gr)}
+.badge-pending{background:#FEF3C7;color:var(--yl)}
+.badge-used{background:#F3F4F6;color:var(--g)}
+
+/* ── LAYOUT ── */
+#app{display:flex;flex-direction:column;min-height:100vh}
+.layout{display:flex;flex:1}
+.sidebar{width:220px;background:var(--w);border-right:1px solid var(--border);padding:20px 12px;display:flex;flex-direction:column;gap:2px;flex-shrink:0}
+.nav-btn{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:none;background:none;cursor:pointer;font-size:14px;font-weight:500;color:var(--g);width:100%;text-align:left;transition:all .15s}
+.nav-btn:hover{background:var(--bg);color:var(--dark)}
+.nav-btn.on{background:var(--pl);color:var(--p);font-weight:700}
+.nav-sep{height:1px;background:var(--border);margin:8px 0}
+.content{flex:1;padding:28px;overflow-y:auto}
+.page{display:none}
+.page.on{display:block}
+.page-hd{margin-bottom:24px}
+.page-hd h2{font-size:20px;font-weight:800}
+.page-hd p{font-size:13px;color:var(--g);margin-top:3px}
+
+/* ── CARDS ── */
+.card{background:var(--w);border-radius:16px;border:1px solid var(--border)}
+.card-hd{padding:16px 20px;border-bottom:1px solid #F3F4F6;display:flex;align-items:center;justify-content:space-between}
+.card-bd{padding:20px}
+.card-ft{padding:12px 20px;border-top:1px solid #F3F4F6;display:flex;gap:8px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px}
+.stat{background:var(--w);border:1px solid var(--border);border-radius:14px;padding:20px}
+.stat .lbl{font-size:11px;font-weight:700;color:var(--g);text-transform:uppercase;letter-spacing:.5px}
+.stat .val{font-size:30px;font-weight:900;margin-top:6px}
+
+/* ── GIFT CARD VISUAL ── */
+.gc{border-radius:16px;padding:22px;position:relative;overflow:hidden;min-height:170px;color:#fff;display:flex;flex-direction:column;justify-content:space-between;user-select:none}
+.gc-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.3}
+.gc-inner{position:relative;z-index:1}
+.gc-brand{font-size:11px;font-weight:800;opacity:.85;letter-spacing:1.5px;text-transform:uppercase}
+.gc-val{font-size:38px;font-weight:900;margin:6px 0 2px;line-height:1}
+.gc-name{font-size:13px;opacity:.9}
+.gc-msg{font-size:12px;opacity:.75;font-style:italic;margin-top:4px}
+.gc-code{font-size:11px;font-family:monospace;background:rgba(0,0,0,.25);padding:3px 8px;border-radius:5px;display:inline-block;margin-top:10px;letter-spacing:1px}
+
+/* ── TABLE ── */
+.table-wrap{background:var(--w);border-radius:14px;border:1px solid var(--border);overflow:hidden}
+table{width:100%;border-collapse:collapse}
+th{background:#F9FAFB;text-align:left;padding:12px 16px;font-size:11px;font-weight:700;color:var(--g);text-transform:uppercase;letter-spacing:.5px}
+td{padding:13px 16px;border-top:1px solid #F9FAFB;font-size:13px;vertical-align:middle}
+tr:hover td{background:#FAFAFA}
+.empty{text-align:center;color:var(--g);padding:40px!important;font-size:14px}
+
+/* ── MODAL ── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)}
+.overlay.on{display:flex}
+.modal{background:var(--w);border-radius:20px;padding:28px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;animation:fadeUp .2s ease}
+.modal h2{font-size:18px;font-weight:800;margin-bottom:20px}
+.modal-ft{display:flex;gap:10px;margin-top:20px}
+.modal-ft .btn{flex:1}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── UPLOAD ── */
+.upload-area{border:2px dashed #D1D5DB;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all .2s}
+.upload-area:hover,.upload-area.drag{border-color:var(--p);background:var(--pl)}
+.upload-area .icon{font-size:32px}
+.upload-area p{font-size:13px;color:var(--g);margin-top:8px}
+.upload-preview{max-height:100px;border-radius:8px;margin-top:10px}
+
+/* ── PIX MODAL ── */
+.pix-box{background:#F0FDF4;border:1px solid #BBF7D0;border-radius:14px;padding:20px;text-align:center}
+.pix-qr{width:200px;height:200px;margin:0 auto 16px;border:3px solid var(--w);border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.1)}
+.pix-key{background:var(--w);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:11px;font-family:monospace;word-break:break-all;cursor:pointer;user-select:all;color:var(--dark);margin-top:8px;transition:background .2s}
+.pix-key:hover{background:#F0FDF4}
+.amount-big{font-size:32px;font-weight:900;color:var(--gr)}
+.step-list{list-style:none;counter-reset:s}
+.step-list li{counter-increment:s;padding:8px 0 8px 36px;position:relative;font-size:13px;color:var(--dark);border-bottom:1px solid #F0F0F0}
+.step-list li::before{content:counter(s);position:absolute;left:0;top:8px;width:24px;height:24px;background:var(--p);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
+
+/* ── WALLET PAGE ── */
+.wallet-wrap{max-width:440px;margin:0 auto;padding:40px 20px}
+.wallet-wrap .gc{margin-bottom:24px;box-shadow:0 8px 32px rgba(0,0,0,.18)}
+.wallet-btns{display:flex;flex-direction:column;gap:12px}
+.wallet-info{background:var(--pl);border-radius:12px;padding:16px;font-size:13px;color:var(--p);line-height:1.7;margin-top:20px}
+
+/* ── TOAST ── */
+#toast{position:fixed;bottom:24px;right:24px;background:var(--dark);color:#fff;padding:11px 20px;border-radius:10px;font-size:13px;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+#toast.on{opacity:1}
+
+/* ── LOADING ── */
+.spinner{width:20px;height:20px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:680px){
+  .sidebar{display:none}
+  .content{padding:16px}
+  .grid4{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════ AUTH ════════════════════ -->
+<div id="auth-screen">
+  <div class="auth-box">
+    <div class="auth-logo">
+      <h1>🎁 Vella Gift</h1>
+      <p>Gift Cards com personalização de imagem</p>
+    </div>
+    <div class="tabs">
+      <button class="tab on" onclick="setTab('login')">Entrar</button>
+      <button class="tab"    onclick="setTab('reg')">Criar conta</button>
+    </div>
+
+    <div id="f-login">
+      <div class="fg"><label>E-mail</label><input id="l-email" type="email" placeholder="seu@email.com" autofocus></div>
+      <div class="fg"><label>Senha</label><input id="l-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')login()"></div>
+      <button class="btn btn-primary btn-w100" id="btn-login" onclick="login()">Entrar</button>
+      <div id="l-err" class="err hidden"></div>
+    </div>
+
+    <div id="f-reg" class="hidden">
+      <div class="fg"><label>Nome completo</label><input id="r-name" type="text" placeholder="Seu nome"></div>
+      <div class="fg"><label>E-mail</label><input id="r-email" type="email" placeholder="seu@email.com"></div>
+      <div class="fg"><label>Senha</label><input id="r-pass" type="password" placeholder="Mínimo 6 caracteres"></div>
+      <button class="btn btn-primary btn-w100" id="btn-reg" onclick="register()">Criar conta gratuita</button>
+      <div id="r-err" class="err hidden"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════ APP ════════════════════ -->
+<div id="app" class="hidden">
+  <div id="topbar">
+    <span class="topbar-logo">🎁 Vella Gift</span>
+    <div class="topbar-right">
+      <span id="top-name" class="semi sm"></span>
+      <span id="top-badge" class="badge"></span>
+      <button class="btn btn-white btn-sm" onclick="logout()">Sair</button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <nav class="sidebar" id="sidebar"></nav>
+    <div class="content" id="content">
+
+      <!-- ── Dashboard ── -->
+      <div class="page" id="p-dashboard">
+        <div class="page-hd"><h2>Dashboard</h2><p>Visão geral da plataforma</p></div>
+        <div class="grid4 mb20" id="stats"></div>
+        <div class="flex gap20" style="flex-wrap:wrap">
+          <div class="card" style="flex:1;min-width:280px">
+            <div class="card-hd"><span class="semi">Últimos pedidos</span></div>
+            <div class="card-bd" id="dash-orders"></div>
+          </div>
+          <div class="card" style="flex:1;min-width:280px">
+            <div class="card-hd"><span class="semi">Clientes recentes</span></div>
+            <div class="card-bd" id="dash-clients"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Templates ── -->
+      <div class="page" id="p-templates">
+        <div class="page-hd flex jb ac" style="flex-wrap:wrap;gap:12px">
+          <div><h2>Templates de Gift Card</h2><p>Crie e gerencie os modelos de cartão</p></div>
+          <button class="btn btn-primary btn-sm" onclick="openTmplModal()">+ Novo template</button>
+        </div>
+        <div class="grid2" id="tmpl-grid"></div>
+      </div>
+
+      <!-- ── Pedidos ── -->
+      <div class="page" id="p-orders">
+        <div class="page-hd"><h2>Pedidos</h2><p>Todos os gift cards emitidos</p></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Código</th><th>Comprador</th><th>Beneficiário</th><th>Valor</th><th>Status</th><th>Ações</th></tr></thead>
+          <tbody id="orders-body"></tbody>
+        </table></div>
+      </div>
+
+      <!-- ── Clientes ── -->
+      <div class="page" id="p-clients">
+        <div class="page-hd"><h2>Clientes</h2><p>Usuários cadastrados</p></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Nome</th><th>E-mail</th><th>Cadastro</th><th>Gift Cards</th></tr></thead>
+          <tbody id="clients-body"></tbody>
+        </table></div>
+      </div>
+
+      <!-- ── Loja ── -->
+      <div class="page" id="p-store">
+        <div class="page-hd"><h2>Escolha um Gift Card 🎁</h2><p>Presentes personalizados para quem você ama</p></div>
+        <div class="grid2" id="store-grid"></div>
+      </div>
+
+      <!-- ── Meus Cards ── -->
+      <div class="page" id="p-mycards">
+        <div class="page-hd"><h2>Meus Gift Cards</h2><p>Gift cards que você comprou</p></div>
+        <div class="grid2" id="mycards-grid"></div>
+      </div>
+
+      <!-- ── Perfil ── -->
+      <div class="page" id="p-profile">
+        <div class="page-hd"><h2>Meu Perfil</h2><p>Seus dados cadastrais</p></div>
+        <div class="card" style="max-width:420px">
+          <div class="card-bd">
+            <div class="fg"><label>Nome</label><input type="text" id="pf-name"></div>
+            <div class="fg"><label>E-mail</label><input type="email" id="pf-email" disabled></div>
+            <div class="fg"><label>Nova senha (opcional)</label><input type="password" id="pf-pass" placeholder="Deixe em branco para manter"></div>
+            <button class="btn btn-primary btn-w100" onclick="saveProfile()">Salvar alterações</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Cartão público (beneficiário) ── -->
+      <div class="page" id="p-wallet">
+        <div class="wallet-wrap">
+          <div class="text-center mb20">
+            <div style="font-size:48px">🎉</div>
+            <h2 style="font-size:22px;font-weight:900;margin-top:8px">Você recebeu um Gift Card!</h2>
+            <p class="muted sm mt4">Adicione à sua carteira digital</p>
+          </div>
+          <div id="wallet-card"></div>
+          <div id="wallet-qr" class="text-center mt16 mb16"></div>
+          <div class="wallet-btns">
+            <button class="btn btn-google btn-w100" onclick="addWallet('google')" style="padding:14px">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+              Adicionar ao Google Wallet
+            </button>
+            <button class="btn btn-apple btn-w100" onclick="addWallet('apple')" style="padding:14px">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+              Adicionar ao Apple Wallet
+            </button>
+          </div>
+          <div class="wallet-info mt16" id="wallet-info"></div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /layout -->
+</div><!-- /app -->
+
+<!-- ════ MODAL: Novo Template ════ -->
+<div class="overlay" id="m-tmpl">
+  <div class="modal">
+    <h2>Novo Template de Gift Card</h2>
+    <div class="fg"><label>Nome</label><input type="text" id="t-name" placeholder="Ex: Aniversário Especial"></div>
+    <div class="fg"><label>Valor (R$)</label><input type="number" id="t-value" placeholder="50" min="1" step="0.01"></div>
+    <div class="fg"><label>Descrição curta</label><input type="text" id="t-desc" placeholder="Uma surpresa para este dia especial"></div>
+    <div class="fg">
+      <label>Imagem do cartão (opcional)</label>
+      <div class="upload-area" id="t-upload" onclick="document.getElementById('t-img-input').click()">
+        <div class="icon">🖼️</div>
+        <p>Clique para escolher uma foto</p>
+        <img id="t-img-preview" class="upload-preview hidden">
+      </div>
+      <input type="file" id="t-img-input" accept="image/*" class="hidden" onchange="previewImg(this)">
+    </div>
+    <div class="fg"><label>Cor de fundo</label>
+      <select id="t-color">
+        <option value="linear-gradient(135deg,#7C3AED,#EC4899)">Roxo → Rosa</option>
+        <option value="linear-gradient(135deg,#1D4ED8,#7C3AED)">Azul → Roxo</option>
+        <option value="linear-gradient(135deg,#059669,#0D9488)">Verde → Teal</option>
+        <option value="linear-gradient(135deg,#D97706,#DC2626)">Dourado → Vermelho</option>
+        <option value="linear-gradient(135deg,#0F172A,#1E3A5F)">Noite Elegante</option>
+        <option value="linear-gradient(135deg,#DB2777,#9333EA)">Rosa Intenso</option>
+      </select>
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-white" onclick="closeModal('m-tmpl')">Cancelar</button>
+      <button class="btn btn-primary" id="btn-save-tmpl" onclick="saveTmpl()">Salvar template</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ MODAL: Comprar Gift Card ════ -->
+<div class="overlay" id="m-buy">
+  <div class="modal">
+    <h2>Enviar Gift Card 🎁</h2>
+    <div id="buy-preview" class="mb16"></div>
+    <div class="fg"><label>Nome do beneficiário</label><input type="text" id="b-name" placeholder="Quem vai receber?"></div>
+    <div class="fg"><label>E-mail do beneficiário (opcional)</label><input type="email" id="b-email" placeholder="para enviar o link por e-mail"></div>
+    <div class="fg"><label>Mensagem personalizada</label><textarea id="b-msg" placeholder="Escreva algo especial para esta pessoa..."></textarea></div>
+    <div class="modal-ft">
+      <button class="btn btn-white" onclick="closeModal('m-buy')">Cancelar</button>
+      <button class="btn btn-primary" id="btn-buy" onclick="confirmBuy()">Ir para pagamento →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ MODAL: Pagamento Pix ════ -->
+<div class="overlay" id="m-pix">
+  <div class="modal">
+    <h2>Pagamento via Pix 💸</h2>
+    <div class="pix-box">
+      <p class="sm bold mb4" style="color:#065F46">Valor a pagar:</p>
+      <div class="amount-big" id="pix-amount"></div>
+      <p class="xs muted mt4">Escaneie o QR Code ou copie a chave</p>
+      <img id="pix-qr-img" class="pix-qr mt12" src="" alt="QR Code Pix">
+      <div class="pix-key mt8" id="pix-key-txt" onclick="copyPix()" title="Clique para copiar">
+        Carregando chave Pix...
+      </div>
+      <p class="xs muted mt8">Clique na chave para copiar</p>
+    </div>
+    <ul class="step-list mt16">
+      <li>Abra o app do seu banco e escolha <strong>Pix</strong></li>
+      <li>Escaneie o QR Code ou cole a chave copiada</li>
+      <li>Confirme o pagamento de <span id="pix-amount2"></span></li>
+      <li>Aguarde a confirmação — o gift card é liberado em segundos</li>
+    </ul>
+    <div style="background:#FEF3C7;border-radius:10px;padding:12px 14px;font-size:12px;color:#92400E;margin-top:12px">
+      ⚠️ Não feche esta tela antes de pagar. Após o pagamento, clique em <strong>"Já paguei"</strong>.
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-white" onclick="closeModal('m-pix')">Cancelar</button>
+      <button class="btn btn-pix btn-w100" id="btn-paid" onclick="confirmPaid()">✅ Já paguei</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ MODAL: Gift Card enviado ════ -->
+<div class="overlay" id="m-sent">
+  <div class="modal text-center">
+    <div style="font-size:52px;margin-bottom:12px">🎉</div>
+    <h2>Gift Card criado!</h2>
+    <p class="sm muted mt8 mb16">Compartilhe o QR Code ou o link com o beneficiário para que ele adicione à carteira digital.</p>
+    <div id="sent-qr" style="display:flex;justify-content:center;margin-bottom:16px"></div>
+    <div style="background:var(--bg);border-radius:10px;padding:12px;font-size:11px;word-break:break-all;color:var(--dark);margin-bottom:16px;cursor:pointer" id="sent-link" onclick="copyLink()"></div>
+    <div class="flex gap8">
+      <button class="btn btn-ghost btn-w100" onclick="copyLink()">📋 Copiar link</button>
+      <button class="btn btn-primary btn-w100" onclick="closeModal('m-sent');nav('mycards')">Ver meus cards</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ MODAL: Wallet Setup ════ -->
+<div class="overlay" id="m-wallet-guide">
+  <div class="modal">
+    <h2 id="wg-title"></h2>
+    <div id="wg-body"></div>
+    <div class="modal-ft">
+      <button class="btn btn-primary btn-w100" onclick="closeModal('m-wallet-guide')">Entendido</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════
+let token = localStorage.getItem('vg_token');
+let me    = JSON.parse(localStorage.getItem('vg_me') || 'null');
+let _buyTmpl  = null;
+let _pendCode = null;
+let _lastLink = '';
+
+// ══════════════════════════════════════════════════════════
+// API
+// ══════════════════════════════════════════════════════════
+async function api(method, path, body, isFormData) {
+  const opts = { method, headers: {} };
+  if (token) opts.headers['Authorization'] = 'Bearer ' + token;
+  if (body && !isFormData) { opts.headers['Content-Type'] = 'application/json'; opts.body = JSON.stringify(body); }
+  if (body && isFormData) opts.body = body;
+  const r = await fetch(path, opts);
+  const data = await r.json();
+  if (!r.ok) throw new Error(data.error || 'Erro na requisição');
+  return data;
+}
+
+// ══════════════════════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════════════════════
+function setTab(t) {
+  document.querySelectorAll('.tab').forEach((el,i) => el.classList.toggle('on', (t==='login'?0:1)===i));
+  document.getElementById('f-login').classList.toggle('hidden', t!=='login');
+  document.getElementById('f-reg').classList.toggle('hidden', t!=='reg');
+}
+
+async function login() {
+  const email = document.getElementById('l-email').value.trim();
+  const pass  = document.getElementById('l-pass').value;
+  const btn   = document.getElementById('btn-login');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>';
+  try {
+    const r = await api('POST', '/api/auth/login', { email, password: pass });
+    saveSession(r); bootApp();
+  } catch(e) { showErr('l-err', e.message); }
+  finally { btn.disabled = false; btn.textContent = 'Entrar'; }
+}
+
+async function register() {
+  const name  = document.getElementById('r-name').value.trim();
+  const email = document.getElementById('r-email').value.trim();
+  const pass  = document.getElementById('r-pass').value;
+  const btn   = document.getElementById('btn-reg');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>';
+  try {
+    const r = await api('POST', '/api/auth/register', { name, email, password: pass });
+    saveSession(r); bootApp();
+  } catch(e) { showErr('r-err', e.message); }
+  finally { btn.disabled = false; btn.textContent = 'Criar conta gratuita'; }
+}
+
+function saveSession(r) {
+  token = r.token; me = r.user;
+  localStorage.setItem('vg_token', token);
+  localStorage.setItem('vg_me', JSON.stringify(me));
+}
+
+function logout() {
+  token = null; me = null;
+  localStorage.removeItem('vg_token');
+  localStorage.removeItem('vg_me');
+  document.getElementById('app').classList.add('hidden');
+  document.getElementById('auth-screen').style.display = 'flex';
+}
+
+function showErr(id, msg) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.classList.remove('hidden');
+  setTimeout(() => el.classList.add('hidden'), 4000);
+}
+
+// ══════════════════════════════════════════════════════════
+// APP BOOT
+// ══════════════════════════════════════════════════════════
+function bootApp() {
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('app').classList.remove('hidden');
+  document.getElementById('top-name').textContent = me.name;
+  const b = document.getElementById('top-badge');
+  b.textContent = me.role === 'admin' ? 'Admin' : 'Cliente';
+  b.className   = 'badge ' + (me.role === 'admin' ? 'badge-admin' : 'badge-client');
+  buildSidebar();
+  nav(me.role === 'admin' ? 'dashboard' : 'store');
+}
+
+function buildSidebar() {
+  const isAdmin = me.role === 'admin';
+  const items = isAdmin
+    ? [{id:'dashboard',ic:'📊',lb:'Dashboard'},{id:'templates',ic:'🎨',lb:'Templates'},{id:'orders',ic:'📦',lb:'Pedidos'},{id:'clients',ic:'👥',lb:'Clientes'},null,{id:'profile',ic:'👤',lb:'Meu Perfil'}]
+    : [{id:'store',ic:'🛍️',lb:'Gift Cards'},{id:'mycards',ic:'💳',lb:'Meus Cartões'},null,{id:'profile',ic:'👤',lb:'Meu Perfil'}];
+  document.getElementById('sidebar').innerHTML = items.map(i =>
+    !i ? '<div class="nav-sep"></div>'
+       : `<button class="nav-btn" id="nb-${i.id}" onclick="nav('${i.id}')">${i.ic} ${i.lb}</button>`
+  ).join('');
+}
+
+function nav(id) {
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('on'));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  const nb = document.getElementById('nb-'+id);
+  if (nb) nb.classList.add('on');
+  const pg = document.getElementById('p-'+id);
+  if (pg) pg.classList.add('on');
+  renderPage(id);
+}
+
+function renderPage(id) {
+  if (id==='dashboard') loadDashboard();
+  if (id==='templates') loadTemplates();
+  if (id==='orders')    loadOrders();
+  if (id==='clients')   loadClients();
+  if (id==='store')     loadStore();
+  if (id==='mycards')   loadMyCards();
+  if (id==='profile')   loadProfile();
+}
+
+// ══════════════════════════════════════════════════════════
+// PAGES
+// ══════════════════════════════════════════════════════════
+async function loadDashboard() {
+  try {
+    const stats = await api('GET', '/api/stats');
+    document.getElementById('stats').innerHTML = [
+      {lbl:'Gift Cards emitidos',val:stats.orders,      clr:'var(--p)'},
+      {lbl:'Receita confirmada', val:`R$ ${stats.revenue.toFixed(2).replace('.',',')}`, clr:'var(--gr)'},
+      {lbl:'Clientes',           val:stats.clients,     clr:'var(--pk)'},
+      {lbl:'Aguardando pagto.',  val:stats.pending,     clr:'var(--yl)'},
+    ].map(s=>`<div class="stat"><div class="lbl">${s.lbl}</div><div class="val" style="color:${s.clr}">${s.val}</div></div>`).join('');
+
+    const orders  = await api('GET', '/api/orders');
+    document.getElementById('dash-orders').innerHTML = orders.slice(-5).reverse().map(o=>`
+      <div class="flex jb ac" style="padding:10px 0;border-bottom:1px solid #F3F4F6">
+        <div><div class="sm bold">${o.benefName}</div><div class="xs muted">${fmtDate(o.createdAt)}</div></div>
+        <div class="flex ac gap8"><span class="bold" style="color:var(--gr)">R$ ${o.value}</span><span class="badge badge-${o.status==='active'?'active':o.status==='used'?'used':'pending'}">${statusLabel(o.status)}</span></div>
+      </div>`).join('') || '<p class="muted sm">Nenhum pedido ainda.</p>';
+
+    const clients = await api('GET', '/api/clients');
+    document.getElementById('dash-clients').innerHTML = clients.slice(-5).reverse().map(c=>`
+      <div style="padding:10px 0;border-bottom:1px solid #F3F4F6">
+        <div class="sm bold">${c.name}</div><div class="xs muted">${c.email}</div>
+      </div>`).join('') || '<p class="muted sm">Nenhum cliente ainda.</p>';
+  } catch(e) { toast('Erro: '+e.message); }
+}
+
+async function loadTemplates() {
+  const tmpls = await api('GET', '/api/templates').catch(()=>[]);
+  document.getElementById('tmpl-grid').innerHTML = tmpls.length ? tmpls.map(gcCard).join('') : '<p class="muted">Nenhum template ainda.</p>';
+}
+
+function gcCard(t, isStore=false) {
+  const gcHtml = `<div class="gc" style="background:${t.color}">
+    ${t.img?`<img class="gc-bg" src="${t.img}" alt="">`:''}
+    <div class="gc-inner">
+      <div class="gc-brand">Vella Gift</div>
+      <div class="gc-val">R$ ${t.value}</div>
+      <div class="gc-name">${t.desc}</div>
+    </div>
+  </div>`;
+  const foot = isStore
+    ? `<button class="btn btn-primary btn-w100" onclick="openBuy('${t.id}')">Presentear — R$ ${t.value}</button>`
+    : `<button class="btn btn-danger btn-sm" onclick="deleteTmpl('${t.id}')">Excluir</button>`;
+  return `<div class="card"><div class="card-bd">${gcHtml}<p class="semi mt12">${t.name}</p></div><div class="card-ft">${foot}</div></div>`;
+}
+
+async function loadOrders() {
+  const orders = await api('GET', '/api/orders').catch(()=>[]);
+  document.getElementById('orders-body').innerHTML = orders.length
+    ? orders.map(o=>`<tr>
+        <td><code style="background:#F3F4F6;padding:2px 6px;border-radius:5px">${o.code}</code></td>
+        <td>${o.buyerName}</td>
+        <td>${o.benefName}${o.benefEmail?`<br><span class="xs muted">${o.benefEmail}</span>`:''}</td>
+        <td class="bold">R$ ${o.value}</td>
+        <td><span class="badge badge-${o.status==='active'?'active':o.status==='used'?'used':'pending'}">${statusLabel(o.status)}</span></td>
+        <td class="flex gap8" style="flex-wrap:wrap">
+          ${o.status==='pending'?`<button class="btn btn-success btn-sm" onclick="confirmOrder('${o.code}')">✅ Confirmar</button>`:''}
+          ${o.status==='active'?`<button class="btn btn-ghost btn-sm" onclick="markUsed('${o.code}')">Usado</button>`:''}
+          <button class="btn btn-white btn-sm" onclick="showCard('${o.code}')">👁 Ver</button>
+        </td>
+      </tr>`).join('')
+    : `<tr><td colspan="6" class="empty">Nenhum pedido ainda.</td></tr>`;
+}
+
+async function loadClients() {
+  const clients = await api('GET', '/api/clients').catch(()=>[]);
+  const orders  = await api('GET', '/api/orders').catch(()=>[]);
+  document.getElementById('clients-body').innerHTML = clients.length
+    ? clients.map(c=>`<tr>
+        <td class="bold">${c.name}</td>
+        <td>${c.email}</td>
+        <td>${fmtDate(c.createdAt)}</td>
+        <td>${orders.filter(o=>o.buyerId===c.id).length}</td>
+      </tr>`).join('')
+    : `<tr><td colspan="4" class="empty">Nenhum cliente ainda.</td></tr>`;
+}
+
+async function loadStore() {
+  const tmpls = await api('GET', '/api/templates').catch(()=>[]);
+  document.getElementById('store-grid').innerHTML = tmpls.length ? tmpls.map(t=>gcCard(t,true)).join('') : '<p class="muted">Nenhum gift card disponível.</p>';
+}
+
+async function loadMyCards() {
+  const orders = await api('GET', '/api/orders/mine').catch(()=>[]);
+  document.getElementById('mycards-grid').innerHTML = orders.length
+    ? orders.map(o=>`<div class="card"><div class="card-bd">
+        <div class="gc" style="background:${o.color}">
+          ${o.img?`<img class="gc-bg" src="${o.img}" alt="">`:''}
+          <div class="gc-inner">
+            <div class="gc-brand">Vella Gift</div>
+            <div class="gc-val">R$ ${o.value}</div>
+            <div class="gc-name">Para: ${o.benefName}</div>
+            ${o.message?`<div class="gc-msg">"${o.message}"</div>`:''}
+            <div class="gc-code">${o.code}</div>
+          </div>
+        </div>
+        <div class="flex ac jb mt12">
+          <span class="xs muted">${fmtDate(o.createdAt)}</span>
+          <span class="badge badge-${o.status==='active'?'active':o.status==='used'?'used':'pending'}">${statusLabel(o.status)}</span>
+        </div>
+      </div><div class="card-ft">
+        <button class="btn btn-ghost btn-sm" onclick="shareCard('${o.code}')">📤 Compartilhar</button>
+        <button class="btn btn-primary btn-sm" onclick="showCard('${o.code}')">Ver cartão</button>
+      </div></div>`).join('')
+    : '<p class="muted">Você ainda não comprou nenhum gift card.</p>';
+}
+
+function loadProfile() {
+  document.getElementById('pf-name').value  = me.name;
+  document.getElementById('pf-email').value = me.email;
+}
+
+// ══════════════════════════════════════════════════════════
+// TEMPLATES
+// ══════════════════════════════════════════════════════════
+let _tmplImgFile = null;
+
+function openTmplModal() {
+  _tmplImgFile = null;
+  ['t-name','t-value','t-desc'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('t-img-preview').classList.add('hidden');
+  document.getElementById('t-upload').querySelector('p').textContent = 'Clique para escolher uma foto';
+  openModal('m-tmpl');
+}
+
+function previewImg(input) {
+  _tmplImgFile = input.files[0];
+  if (!_tmplImgFile) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = document.getElementById('t-img-preview');
+    img.src = e.target.result;
+    img.classList.remove('hidden');
+    document.getElementById('t-upload').querySelector('p').textContent = _tmplImgFile.name;
+  };
+  reader.readAsDataURL(_tmplImgFile);
+}
+
+async function saveTmpl() {
+  const name  = document.getElementById('t-name').value.trim();
+  const value = document.getElementById('t-value').value;
+  const desc  = document.getElementById('t-desc').value.trim();
+  const color = document.getElementById('t-color').value;
+  if (!name||!value||!desc) { toast('Preencha nome, valor e descrição.'); return; }
+  const btn = document.getElementById('btn-save-tmpl');
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Salvando...';
+  try {
+    const fd = new FormData();
+    fd.append('name', name); fd.append('value', value);
+    fd.append('desc', desc); fd.append('color', color);
+    if (_tmplImgFile) fd.append('img', _tmplImgFile);
+    await api('POST', '/api/templates', fd, true);
+    closeModal('m-tmpl');
+    loadTemplates();
+    toast('Template criado!');
+  } catch(e) { toast('Erro: '+e.message); }
+  finally { btn.disabled=false; btn.textContent='Salvar template'; }
+}
+
+async function deleteTmpl(id) {
+  if (!confirm('Excluir este template?')) return;
+  await api('DELETE', '/api/templates/'+id).catch(e=>toast(e.message));
+  loadTemplates();
+  toast('Template excluído.');
+}
+
+// ══════════════════════════════════════════════════════════
+// COMPRA + PIX
+// ══════════════════════════════════════════════════════════
+async function openBuy(tmplId) {
+  const tmpls = await api('GET', '/api/templates');
+  _buyTmpl = tmpls.find(t=>t.id===tmplId);
+  if (!_buyTmpl) return;
+  ['b-name','b-email','b-msg'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('buy-preview').innerHTML = `<div class="gc" style="background:${_buyTmpl.color}">
+    ${_buyTmpl.img?`<img class="gc-bg" src="${_buyTmpl.img}" alt="">`:''}
+    <div class="gc-inner"><div class="gc-brand">Vella Gift</div><div class="gc-val">R$ ${_buyTmpl.value}</div><div class="gc-name">${_buyTmpl.desc}</div></div>
+  </div>`;
+  openModal('m-buy');
+}
+
+async function confirmBuy() {
+  const name  = document.getElementById('b-name').value.trim();
+  const email = document.getElementById('b-email').value.trim();
+  const msg   = document.getElementById('b-msg').value.trim();
+  if (!name) { toast('Informe o nome do beneficiário.'); return; }
+  const btn = document.getElementById('btn-buy');
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Processando...';
+  try {
+    const r = await api('POST', '/api/orders', { templateId: _buyTmpl.id, benefName: name, benefEmail: email||undefined, message: msg||undefined });
+    _pendCode = r.code;
+    closeModal('m-buy');
+    // Show Pix modal
+    document.getElementById('pix-amount').textContent  = `R$ ${r.value.toFixed(2).replace('.',',')}`;
+    document.getElementById('pix-amount2').textContent = `R$ ${r.value.toFixed(2).replace('.',',')}`;
+    const pixImg = document.getElementById('pix-qr-img');
+    if (r.pixQRImage) {
+      pixImg.src = r.pixQRImage.startsWith('data:') ? r.pixQRImage : `data:image/png;base64,${r.pixQRImage}`;
+    }
+    document.getElementById('pix-key-txt').textContent = r.pixKey || 'Chave não disponível';
+    window._pixKey = r.pixKey;
+    openModal('m-pix');
+  } catch(e) { toast('Erro: '+e.message); }
+  finally { btn.disabled=false; btn.textContent='Ir para pagamento →'; }
+}
+
+function copyPix() {
+  navigator.clipboard.writeText(window._pixKey||'').then(()=>toast('Chave Pix copiada!'));
+}
+
+async function confirmPaid() {
+  if (!_pendCode) return;
+  const btn = document.getElementById('btn-paid');
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Verificando...';
+  try {
+    // Em produção, o webhook Asaas confirma automaticamente.
+    // Aqui o usuário declara que pagou; admin confirma manualmente se necessário.
+    toast('✅ Pagamento registrado! Aguarde a confirmação do administrador.');
+    closeModal('m-pix');
+    // Gera link do cartão para compartilhar
+    const cardLink = `${location.origin}/card/${_pendCode}`;
+    _lastLink = cardLink;
+    document.getElementById('sent-link').textContent = cardLink;
+    document.getElementById('sent-qr').innerHTML = `<img src="/api/qr/${_pendCode}" style="width:180px;border-radius:10px" alt="QR">`;
+    openModal('m-sent');
+  } catch(e) { toast('Erro: '+e.message); }
+  finally { btn.disabled=false; btn.innerHTML='✅ Já paguei'; }
+}
+
+// ══════════════════════════════════════════════════════════
+// ADMIN ACTIONS
+// ══════════════════════════════════════════════════════════
+async function confirmOrder(code) {
+  await api('POST', `/api/orders/${code}/confirm`).catch(e=>toast(e.message));
+  toast('✅ Pagamento confirmado! Gift card ativado.');
+  loadOrders();
+}
+
+async function markUsed(code) {
+  await api('PATCH', `/api/orders/${code}/use`).catch(e=>toast(e.message));
+  toast('Marcado como usado.');
+  loadOrders();
+}
+
+// ══════════════════════════════════════════════════════════
+// CARD VIEW (beneficiário)
+// ══════════════════════════════════════════════════════════
+async function showCard(code) {
+  try {
+    const o = await api('GET', `/api/cards/${code}`);
+    document.getElementById('wallet-card').innerHTML = `<div class="gc" style="background:${o.color}">
+      ${o.img?`<img class="gc-bg" src="${o.img}" alt="">`:''}
+      <div class="gc-inner">
+        <div class="gc-brand">Vella Gift</div>
+        <div class="gc-val">R$ ${o.value}</div>
+        <div class="gc-name">Para: ${o.benefName}</div>
+        ${o.message?`<div class="gc-msg">"${o.message}"</div>`:''}
+        <div class="gc-code">${o.code}</div>
+      </div>
+    </div>`;
+    document.getElementById('wallet-qr').innerHTML = o.qr ? `<img src="${o.qr}" style="width:160px;border-radius:10px" alt="QR">` : '';
+    document.getElementById('wallet-info').innerHTML = `Código: <strong>${o.code}</strong> — Válido por 12 meses a partir de ${fmtDate(o.createdAt)}.`;
+    window._walletOrder = o;
+    nav('wallet');
+  } catch(e) { toast('Erro ao carregar cartão: '+e.message); }
+}
+
+async function shareCard(code) {
+  const link = `${location.origin}/card/${code}`;
+  _lastLink = link;
+  document.getElementById('sent-link').textContent = link;
+  document.getElementById('sent-qr').innerHTML = `<img src="/api/qr/${code}" style="width:180px;border-radius:10px" alt="QR">`;
+  openModal('m-sent');
+}
+
+// ══════════════════════════════════════════════════════════
+// WALLET BUTTONS
+// ══════════════════════════════════════════════════════════
+function addWallet(type) {
+  const guides = {
+    google: {
+      title: 'Ativar Google Wallet',
+      body: `<p class="sm muted mb16">A integração Google Wallet exige configuração no Google Pay & Wallet Console. Siga os passos:</p>
+        <ul class="step-list">
+          <li>Acesse <strong>pay.google.com/gp/w/issuer</strong> e crie conta de emissor (gratuito)</li>
+          <li>Crie um <strong>Pass Class</strong> do tipo Gift Card</li>
+          <li>Ative a <strong>Google Wallet API</strong> no Google Cloud Console</li>
+          <li>Adicione as credenciais no <code>.env</code> do servidor</li>
+          <li>O botão passará a funcionar automaticamente</li>
+        </ul>
+        <div style="background:var(--pl);border-radius:10px;padding:12px;font-size:12px;color:var(--p);margin-top:12px">
+          ✅ Gratuito · Funciona em todos os Android · Setup em 1-2 dias
+        </div>`
+    },
+    apple: {
+      title: 'Ativar Apple Wallet',
+      body: `<p class="sm muted mb16">A integração Apple Wallet requer conta de desenvolvedor Apple. Siga os passos:</p>
+        <ul class="step-list">
+          <li>Crie conta em <strong>developer.apple.com</strong> (US$ 99/ano)</li>
+          <li>Crie um <strong>PassType ID</strong> (ex: pass.com.vellagift)</li>
+          <li>Gere o certificado <code>.p12</code> no Keychain Access</li>
+          <li>Configure o servidor com o pacote <code>passkit-generator</code></li>
+          <li>Os usuários iOS receberão o arquivo <code>.pkpass</code> automaticamente</li>
+        </ul>
+        <div style="background:var(--pl);border-radius:10px;padding:12px;font-size:12px;color:var(--p);margin-top:12px">
+          ℹ️ Apenas iOS · Requer Mac para certificado · Setup em 2-3 dias
+        </div>`
+    }
+  };
+  const g = guides[type];
+  document.getElementById('wg-title').textContent = g.title;
+  document.getElementById('wg-body').innerHTML = g.body;
+  openModal('m-wallet-guide');
+}
+
+// ══════════════════════════════════════════════════════════
+// PROFILE
+// ══════════════════════════════════════════════════════════
+async function saveProfile() {
+  const name = document.getElementById('pf-name').value.trim();
+  const pass = document.getElementById('pf-pass').value;
+  if (!name) { toast('Nome é obrigatório.'); return; }
+  await api('PUT', '/api/auth/profile', { name, password: pass||undefined }).catch(e=>toast(e.message));
+  me.name = name;
+  localStorage.setItem('vg_me', JSON.stringify(me));
+  document.getElementById('top-name').textContent = name;
+  toast('Perfil salvo!');
+}
+
+// ══════════════════════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════════════════════
+function openModal(id)  { document.getElementById(id).classList.add('on'); }
+function closeModal(id) { document.getElementById(id).classList.remove('on'); }
+document.querySelectorAll('.overlay').forEach(o => o.addEventListener('click', e => { if(e.target===o) o.classList.remove('on'); }));
+
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('on');
+  setTimeout(()=>el.classList.remove('on'), 3200);
+}
+
+function copyLink() {
+  navigator.clipboard.writeText(_lastLink||'').then(()=>toast('Link copiado!'));
+}
+
+function fmtDate(iso) {
+  if (!iso) return '—';
+  return new Date(iso).toLocaleDateString('pt-BR');
+}
+
+function statusLabel(s) {
+  return s==='active'?'Ativo':s==='used'?'Usado':'Aguard. pagto.';
+}
+
+// ══════════════════════════════════════════════════════════
+// DEEP LINK: /card/:code (beneficiário sem login)
+// ══════════════════════════════════════════════════════════
+async function checkCardRoute() {
+  const m = location.pathname.match(/^\/card\/([A-Z0-9]+)$/);
+  if (!m) return false;
+  const code = m[1];
+  try {
+    const o = await api('GET', `/api/cards/${code}`);
+    document.getElementById('auth-screen').style.display = 'none';
+    document.getElementById('app').classList.remove('hidden');
+    document.getElementById('topbar').innerHTML = `<span class="topbar-logo">🎁 Vella Gift</span><a href="/" class="btn btn-white btn-sm">Criar conta</a>`;
+    document.getElementById('sidebar').style.display = 'none';
+    document.getElementById('wallet-card').innerHTML = `<div class="gc" style="background:${o.color}">
+      ${o.img?`<img class="gc-bg" src="${o.img}" alt="">`:''}
+      <div class="gc-inner">
+        <div class="gc-brand">Vella Gift</div>
+        <div class="gc-val">R$ ${o.value}</div>
+        <div class="gc-name">Para: ${o.benefName}</div>
+        ${o.message?`<div class="gc-msg">"${o.message}"</div>`:''}
+        <div class="gc-code">${o.code}</div>
+      </div>
+    </div>`;
+    document.getElementById('wallet-qr').innerHTML = o.qr ? `<img src="${o.qr}" style="width:160px;border-radius:10px" alt="QR">` : '';
+    document.getElementById('wallet-info').innerHTML = `Código: <strong>${o.code}</strong> · Válido por 12 meses a partir de ${fmtDate(o.createdAt)}.`;
+    window._walletOrder = o;
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+    document.getElementById('p-wallet').classList.add('on');
+    return true;
+  } catch {
+    alert('Gift Card não encontrado: ' + code);
+    return false;
+  }
+}
+
+// QR code endpoint (uses server)
+// /api/qr/:code → returns PNG image
+
+// ══════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════
+(async () => {
+  if (await checkCardRoute()) return;
+  if (token && me) { bootApp(); return; }
+  document.getElementById('auth-screen').style.display = 'flex';
+})();
+</script>
+</body>
+</html>
