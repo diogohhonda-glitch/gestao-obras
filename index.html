@@ -2482,12 +2482,13 @@ async function saveCloudConfig() {
   try {
     JSONBIN_KEY = key;
     useCloud = true;
-    // Se usuário informou Bin ID manual, usa ele (recuperar dados de outro dispositivo)
+    // Se usuário informou Bin ID manual, usa ele diretamente
     if (binIdManual) {
       JSONBIN_BIN_ID = binIdManual;
-      localStorage.setItem('imper_jb_bin', JSONBIN_BIN_ID);
     } else {
-      JSONBIN_BIN_ID = localStorage.getItem('imper_jb_bin') || null;
+      // Só reutiliza o Bin salvo se a chave for a mesma — evita tentar bin de outra conta
+      const savedKey = localStorage.getItem('imper_jb_key') || _getCk('imper_jb_key') || '';
+      JSONBIN_BIN_ID = (savedKey === key) ? (localStorage.getItem('imper_jb_bin') || _getCk('imper_jb_bin') || null) : null;
     }
     const data = await cloudLoad();
     saveCloudCreds();
