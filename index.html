@@ -886,8 +886,21 @@ async function cloudLoad() {
   return result.record;
 }
 
+function saveLocalBackup() {
+  try {
+    const backup = { clientes: state.clientes, orcamentos: state.orcamentos, prestadores: state.prestadores, obras: state.obras, custos: state.custos, funcionarios: state.funcionarios, diarioObra: state.diarioObra, notasFiscais: state.notasFiscais, contas: state.contas, estoque: state.estoque, _backup_em: new Date().toISOString() };
+    localStorage.setItem('imper_backup', JSON.stringify(backup));
+    _setCk('imper_backup_ts', backup._backup_em);
+  } catch(e) { /* ignora erros de storage cheio */ }
+}
+
+function loadLocalBackup() {
+  try { return JSON.parse(localStorage.getItem('imper_backup') || 'null'); } catch(e) { return null; }
+}
+
 async function cloudSave() {
   if (!useCloud || !JSONBIN_BIN_ID) return;
+  saveLocalBackup();
   try {
     const resp = await fetch(`${JSONBIN_BASE}/b/${JSONBIN_BIN_ID}`, {
       method: 'PUT',
@@ -967,6 +980,32 @@ async function loadAllData() {
   if (useCloud) {
     try {
       const data = await cloudLoad();
+      const temDados = (data.clientes||[]).length > 0 || (data.orcamentos||[]).length > 0 || (data.obras||[]).length > 0 || (data.funcionarios||[]).length > 0;
+
+      if (!temDados) {
+        // Nuvem vazia — verifica se existe backup local com dados reais
+        const backup = loadLocalBackup();
+        const backupTemDados = backup && ((backup.clientes||[]).length > 0 || (backup.orcamentos||[]).length > 0 || (backup.obras||[]).length > 0);
+        if (backupTemDados) {
+          const restaurar = confirm('⚠️ A nuvem está vazia, mas encontramos um backup local com seus dados.\n\nDeseja restaurar o backup local para a nuvem?');
+          if (restaurar) {
+            state.clientes     = backup.clientes     || [];
+            state.orcamentos   = backup.orcamentos   || [];
+            state.prestadores  = backup.prestadores  || [];
+            state.obras        = backup.obras        || [];
+            state.custos       = backup.custos       || [];
+            state.funcionarios = backup.funcionarios || [];
+            state.diarioObra   = backup.diarioObra   || [];
+            state.notasFiscais = backup.notasFiscais || [];
+            state.contas       = backup.contas       || [];
+            state.estoque      = backup.estoque      || [];
+            await cloudSave();
+            showToast('✅ Backup restaurado com sucesso!', false);
+            updateCloudStatusBtn(); renderAll(); return;
+          }
+        }
+      }
+
       state.clientes     = dedup(data.clientes     || [], i => i.nome?.trim().toLowerCase());
       state.orcamentos   = dedup(data.orcamentos   || [], i => i.descricao?.trim().toLowerCase() + '|' + i.valor);
       state.prestadores  = dedup(data.prestadores  || [], i => i.nome?.trim().toLowerCase());
@@ -977,8 +1016,7 @@ async function loadAllData() {
       state.notasFiscais = dedup(data.notasFiscais || []);
       state.contas       = dedup(data.contas       || []);
       state.estoque      = dedup(data.estoque      || [], i => i.material?.trim().toLowerCase());
-      // Salva de volta sem duplicatas
-      await cloudSave();
+      // ⚠️ Não chama cloudSave() aqui — evita sobrescrever dados por acidente na inicialização
     } catch(e) {
       console.error('Erro ao carregar da nuvem:', e);
       alert('Erro ao conectar com a nuvem. Verifique a chave de API e tente novamente.\n\n' + e.message);
